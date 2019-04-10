@@ -26,13 +26,17 @@ def create_app(config_name):
 
     @app.route('/', methods=['POST'])
     def SignUp():
-        if request.method == 'POST':
-            name = request.form['name']
+
+        name = request.form['name']
+
+        if request.method == 'POST' and name != "":
 
             # TODO: Test remote_user string handling from apache server.
             # user = request.environ('REMOTE_USER')
             # user = request.remote_user.name
-            user = "mmoo97"
+            user = "*remote_user*"
+
+            # TODO: Deliver arguments to script.
 
             return redirect(url_for('success', name=name, username=user))
 

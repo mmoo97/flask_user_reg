@@ -3,7 +3,7 @@
 
 To clone this repo use the command: 
 ```
-git clone https://gitlab.rc.uab.edu/noe121/flaskformwork.git
+git clone https://gitlab.rc.uab.edu/mmoo97/flask_user_reg.git
 
 ```
 ## Prerequisites 
