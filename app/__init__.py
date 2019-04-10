@@ -3,6 +3,7 @@
 # third-party imports
 from flask import Flask, redirect, url_for, request
 from flask import render_template
+from flask_bootstrap import Bootstrap
 
 # local imports
 
@@ -10,25 +11,30 @@ from flask import render_template
 def create_app(config_name):
 
     app = Flask(__name__)
+    Bootstrap(app)
 
-    @app.route('/success/<name>')
-    def success(name):
-        return 'welcome new user %s' % name
+    @app.route('/success/<name>/<username>')
+    def success(username, name):
+        # TODO: Make the success route back to cheaha.
+
+        return "Username: %s | Name: %s" % (username, name)
 
     @app.route('/', methods=['GET'])
     def index():
-        return render_template("auth/SignUp.html")
+        return render_template("index.html")
+        # return redirect("http://localhost:8080")
 
     @app.route('/', methods=['POST'])
     def SignUp():
         if request.method == 'POST':
-            email = request.form['email']
-            # make username from email
+            name = request.form['name']
+
+            # TODO: Test remote_user string handling from apache server.
             # user = request.environ('REMOTE_USER')
             # user = request.remote_user.name
-            # user = request.environ
-            user = 'Mitchell'
-            return redirect(url_for('success', name=user))
+            user = "mmoo97"
+
+            return redirect(url_for('success', name=name, username=user))
 
     @app.errorhandler(403)
     def forbidden(error):
