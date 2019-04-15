@@ -13,6 +13,7 @@ def create_app(config_name):
 
     app = Flask(__name__)
     Bootstrap(app)
+    return_url = request.referrer
 
     @app.route('/success/<name>/<username>')
     def success(username, name):
@@ -26,10 +27,11 @@ def create_app(config_name):
 
         # return "Username: %s | Name: %s" % (username, name)
 
-        return redirect("http://localhost:8080", 302)
+        return redirect(return_url, 302)
 
     @app.route('/', methods=['GET'])
     def index():
+
         return render_template("auth/SignUp.html")
 
     @app.route('/', methods=['GET', 'POST'])
@@ -40,6 +42,7 @@ def create_app(config_name):
 
             # TODO: Test remote_user string handling from apache server.
             user = request.environ('REMOTE_USER')
+            # user = request.remote_user
             # user = '*remote user*'
 
             return redirect(url_for('success', username=user, name=name))
