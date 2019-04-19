@@ -13,7 +13,8 @@ def create_app(config_name):
 
     app = Flask(__name__)
     Bootstrap(app)
-    return_url = request.referrer
+    # TODO:// test return URL. *Possibly make a success page before returning?*
+    return_url = request.referrer # 'https://www.google.com/'
 
     @app.route('/success/<name>/<username>')
     def success(username, name):
@@ -32,20 +33,31 @@ def create_app(config_name):
     @app.route('/', methods=['GET'])
     def index():
 
-        return render_template("auth/SignUp.html")
+        # TODO:// test remote user variable
+
+        user = request.remote_user
+
+        # user = 'tom'
+
+        return render_template("auth/SignUp.html", user=user)
 
     @app.route('/', methods=['GET', 'POST'])
     def SignUp():
 
         name = request.form['name']
+        user = request.environ('REMOTE_USER')
+        # user = 'tom'
+
+        if request.method == 'GET':
+
+            return render_template("auth/SignUp.html", user=user)
+
         if request.method == 'POST' and name != "":
 
-            # TODO: Test remote_user string handling from apache server.
-            user = request.environ('REMOTE_USER')
-            # user = request.remote_user
-            # user = '*remote user*'
-
             return redirect(url_for('success', username=user, name=name))
+
+        else:
+            return render_template("auth/SignUp.html", user=user)
 
     @app.errorhandler(403)
     def forbidden(error):
