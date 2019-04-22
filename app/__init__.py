@@ -26,8 +26,8 @@ def create_app(config_name):
         global return_url
         print(username, name,return_url, file=sys.stdout)
         # Deliver arguments to script.
-        # tempString = 'sudo user_create ' + username + " " + name
-        # os.system("ssh ohpc " + tempString)
+        tempString = 'sudo user_create ' + username + " " + name
+        os.system("ssh ohpc " + tempString)
 
         return redirect(return_url, 302)
 
