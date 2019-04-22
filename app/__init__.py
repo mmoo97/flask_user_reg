@@ -16,7 +16,6 @@ def create_app(config_name):
 
     app = Flask(__name__)
     Bootstrap(app)
-    # TODO:// test return URL. *Possibly make a success page before returning?*
     global return_url
     return_url = ''
 
@@ -24,7 +23,7 @@ def create_app(config_name):
     def success(username, name):
 
         global return_url
-        print(username, name,return_url, file=sys.stdout)
+        print(username, name, return_url, file=sys.stdout)
         # Deliver arguments to script.
         tempString = 'sudo user_create ' + username + " " + name
         os.system("ssh ohpc " + tempString)
@@ -34,9 +33,8 @@ def create_app(config_name):
     @app.route('/', methods=['GET'])
     def index():
 
-        # TODO: Make url origin url.
         global return_url
-        return_url = "http://example.com"
+        return_url = request.args.get("redir")
 
         user = request.remote_user
 
@@ -47,7 +45,6 @@ def create_app(config_name):
 
         name = request.form['name']
 
-        # TODO: Test to make sure remote_user is captured
         user = request.remote_user
 
         if request.method == 'GET':
