@@ -11,13 +11,16 @@
   <!-- Latest compiled JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <title>HPC Desktop</title>
+
   <link rel="shortcut icon" type="image/x-icon" href="/public/favicon.ico">
-  <link rel="stylesheet" media="all" href="/static/ss/application-eece48381ddeebab1ee710d686347e55075e2c94f2099e24f114.css">
-  <script src="/static/ss/application-268f5240ef619eb5a13eabc03b65388c21be92fab41c58c55dc2.js"></script>
+
+  <link rel="stylesheet" media="all" href="/static/style/application-eece48381ddeebab1ee710d686347e55075e2c94f2099e24f114.css">
+
+  <script src="/static/style/application-268f5240ef619eb5a13eabc03b65388c21be92fab41c58c55dc2.js"></script>
+
   <meta name="csrf-param" content="authenticity_token">
+
 <meta name="csrf-token" content="0+ThIoS92NXMuBrNdWwZ01S5oQovHxQPpgKyhP38madChKujraPZUJru2Y7jm1b5kfrNbbxc47/5YOSRfcauoQ==">
-
-
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
@@ -35,11 +38,7 @@
       </div><div class="container-fluid">
 
       <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-9" style="">
-        <a class="navbar-brand" href="/pun/sys/dashboard/">UAB OnDemand <sup>beta</sup></a><ul class="nav navbar-nav">
-  <ul class="dropdown-menu">
-
-        </ul>
-        <div class="navbar-right">
+        <a class="navbar-brand" href="/pun/sys/dashboard/">UAB OnDemand <sup>beta</sup></a><div class="navbar-right">
           <ul class="nav navbar-nav" style="float: right;">
 
             <li class="dropdown" title="Help">
@@ -66,10 +65,16 @@
 </li>
 
           </ul>
-          <ul class="nav navbar-nav">
+          <ul class="nav navbar-nav" style="
+    float: right;
+">
             <li>
           </li></ul>
-        </div>
+        </div><ul class="nav navbar-nav">
+  <ul class="dropdown-menu">
+
+        </ul>
+
       </ul></div>
     </div>
   </nav>
@@ -88,6 +93,14 @@
           <label for="name"><b>Full Name:<br></b></label>
           <input class="form-control" type="text" placeholder="Enter Full Name" name="name">
 
+          <label for="email"><b>Email:<br></b></label>
+          <input class="form-control" type="text" placeholder="Enter Email Address" name="email">
+
+          <label for="institution"><b>Institution:<br></b></label>
+          <input class="form-control" type="text" placeholder="Enter Institution" name="institution">
+
+          <label for="sponsor"><b>Sponsor or Affiliation:<br></b></label>
+          <input class="form-control" type="text" placeholder="Enter Sponsor or Affiliation" name="sponsor">
 
           <input class="btn btn-primary btn-block" type="submit" value="submit" onclick="return empty()">
       </div>
