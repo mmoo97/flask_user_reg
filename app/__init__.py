@@ -34,7 +34,7 @@ def create_app(config_name):
     def index():
 
         global return_url
-        return_url = request.args.get("redir") or "/"
+        return_url = request.args.get("redir")
 
         user = request.remote_user
 
