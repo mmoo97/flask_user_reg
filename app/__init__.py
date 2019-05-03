@@ -19,14 +19,15 @@ def create_app(config_name):
     global return_url
     return_url = ''
 
-    @app.route('/success/<name>/<username>')
+    @app.route('/success/<name>/<username>', methods=['GET', 'POST'])
     def success(username, name):
 
         global return_url
         print(username, name, return_url, file=sys.stdout)
         # Deliver arguments to script.
-        tempString = 'sudo user_create ' + username + " " + name
-        os.system("ssh ohpc " + tempString)
+        tempString = 'ssh ohpc sudo /opt/ohpc_user_create/user_create' + username + ' \"' + name + '\"'
+        print(tempString, file=sys.stdout)
+        os.system(tempString)
 
         return redirect(return_url, 302)
 
@@ -34,16 +35,14 @@ def create_app(config_name):
     def index():
 
         global return_url
-        return_url = request.args.get("redir")
+        return_url = request.args.get("redir") or "/pun/sys/dashboard"
 
         user = request.remote_user
 
-        return render_template("auth/SignUp.html", user=user, url=return_url)
+        return redirect(url_for("SignUp", user=user))
 
-    @app.route('/', methods=['GET', 'POST'])
+    @app.route('/thing', methods=['GET', 'POST'])
     def SignUp():
-
-        name = request.form['name']
 
         user = request.remote_user
 
@@ -51,12 +50,16 @@ def create_app(config_name):
 
             return render_template("auth/SignUp.html", user=user)
 
-        if request.method == 'POST' and name != "":
+        if request.method == 'POST':
 
-            return redirect(url_for('success', username=str(user), name=name))
+            name = request.form['name']
 
-        else:
-            return render_template("auth/SignUp.html", user=user)
+            if name != "":
+
+                return redirect(url_for('success', username=str(user), name=name))
+
+            else:
+                return render_template("auth/SignUp.html", user=user)
 
     @app.errorhandler(403)
     def forbidden(error):
