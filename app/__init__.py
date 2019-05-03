@@ -31,7 +31,7 @@ def create_app(config_name):
 
         return redirect(return_url, 302)
 
-    @app.route('/', methods=['GET'])
+    @app.route('/')
     def index():
 
         global return_url
@@ -41,7 +41,7 @@ def create_app(config_name):
 
         return redirect(url_for("SignUp", user=user))
 
-    @app.route('/thing', methods=['GET', 'POST'])
+    @app.route('/thing/', methods=['GET', 'POST'])
     def SignUp():
 
         user = request.remote_user
