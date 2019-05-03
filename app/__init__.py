@@ -16,6 +16,7 @@ def create_app(config_name):
 
     app = Flask(__name__)
     Bootstrap(app)
+
     global return_url
     return_url = ''
 
@@ -24,6 +25,7 @@ def create_app(config_name):
 
         global return_url
         print(username, name, return_url, file=sys.stdout)
+
         # Deliver arguments to script.
         tempString = 'ssh ohpc sudo /opt/ohpc_user_create/user_create' + username + ' \"' + name + '\"'
         print(tempString, file=sys.stdout)
