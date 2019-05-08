@@ -5,6 +5,7 @@ from __future__ import print_function
 
 import os
 import sys
+import subprocess
 
 # third-party imports
 from flask import Flask, redirect, url_for, request
@@ -20,24 +21,27 @@ def create_app(config_name):
     global return_url
     return_url = ''
 
-    @app.route('/success/<name>/<username>', methods=['GET', 'POST'])
+    @app.route('/success/<name>/<username>')
     def success(username, name):
 
         global return_url
         print(username, name, return_url, file=sys.stdout)
 
         # Deliver arguments to script.
-        tempString = 'ssh ohpc sudo /opt/ohpc_user_create/user_create' + username + ' \"' + name + '\"'
+        tempString = 'ssh ohpc "sudo /opt/ohpc_user_create/user_create ' + username + ' \'' + name + '\'"'
         print(tempString, file=sys.stdout)
-        os.system(tempString)
 
-        return redirect(return_url, 302)
+        output = subprocess.check_output([tempString], shell=True)
+
+        print(output.split('\n')[7], file=sys.stdout)
+
+        return redirect('/pun/sys/dashboard', 302)
 
     @app.route('/')
     def index():
 
         global return_url
-        return_url = request.args.get("redir") or "/pun/sys/dashboard"
+        return_url = request.args.get("redir")[0] or "/pun/sys/dashboard"
 
         user = request.remote_user
 
