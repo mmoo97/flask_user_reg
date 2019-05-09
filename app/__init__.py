@@ -35,7 +35,7 @@ def create_app(config_name):
 
         print(output.split('\n')[7], file=sys.stdout)
 
-        return redirect('/pun/sys/dashboard', 302)
+        return redirect(return_url, 302)
 
     @app.route('/')
     def index():
