@@ -40,13 +40,14 @@ def create_app(config_name):
     @app.route('/', methods=['GET', 'POST'])
     def index():
 
-        global return_url
-
-        return_url = request.args.get("redir")[0] or "/pun/sys/dashboard"
-
         user = request.remote_user
 
         if request.method == 'GET':
+
+            global return_url
+
+            return_url = request.args.get("redir")[0] or "/pun/sys/dashboard"
+
             return render_template("auth/SignUp.html", user=user)
 
         if request.method == 'POST':
