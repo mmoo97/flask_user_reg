@@ -21,22 +21,6 @@ def create_app(config_name):
     global return_url
     return_url = ''
 
-    @app.route('/success/<name>/<username>')
-    def success(username, name):
-
-        global return_url
-        print(username, name, return_url, file=sys.stdout)
-
-        # Deliver arguments to script.
-        tempString = 'ssh ohpc "sudo /opt/ohpc_user_create/user_create ' + username + ' \'' + name + '\'"'
-        print(tempString, file=sys.stdout)
-
-        output = subprocess.check_output([tempString], shell=True)
-
-        print(output.split('\n')[7], file=sys.stdout)
-
-        return redirect(return_url, 302)
-
     @app.route('/', methods=['GET', 'POST'])
     def index():
 
@@ -60,6 +44,22 @@ def create_app(config_name):
 
             else:
                 return render_template("auth/SignUp.html", user=user)
+
+    @app.route('/success/<name>/<username>')
+    def success(username, name):
+
+        global return_url
+        print(username, name, return_url, file=sys.stdout)
+
+        # Deliver arguments to script.
+        tempString = 'ssh ohpc "sudo /opt/ohpc_user_create/user_create ' + username + ' \'' + name + '\'"'
+        print(tempString, file=sys.stdout)
+
+        output = subprocess.check_output([tempString], shell=True)
+
+        print(output.split('\n')[7], file=sys.stdout)
+
+        return redirect(return_url, 302)
 
     @app.errorhandler(403)
     def forbidden(error):
