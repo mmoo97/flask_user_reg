@@ -45,14 +45,14 @@ def create_app(config_name):
             else:
                 return render_template("auth/SignUp.html", user=user)
 
-    @app.route('/success/<name>/<username>')
-    def success(username, name):
+    @app.route('/success/<username>/<fullname>')
+    def success(username, fullname):
 
         global return_url
-        print(username, name, return_url, file=sys.stdout)
+        print(username, fullname, return_url, file=sys.stdout)
 
         # Deliver arguments to script.
-        tempString = 'ssh ohpc "sudo /opt/ohpc_user_create/user_create ' + username + ' \'' + name + '\'"'
+        tempString = 'ssh ohpc "sudo /opt/ohpc_user_create/user_create ' + username + ' \'' + fullname + '\'"'
         print(tempString, file=sys.stdout)
 
         output = subprocess.check_output([tempString], shell=True)
