@@ -28,12 +28,12 @@ def create_app(config_name):
         print(username, name, return_url, file=sys.stdout)
 
         # Deliver arguments to script.
-        tempString = 'ssh ohpc "sudo /opt/ohpc_user_create/user_create ' + username + ' \'' + name + '\'"'
+        tempString = 'echo ssh ohpc "sudo /opt/ohpc_user_create/user_create ' + username + ' \'' + name + '\'"'
         print(tempString, file=sys.stdout)
 
         output = subprocess.check_output([tempString], shell=True)
 
-        print(output.split('\n')[7], file=sys.stdout)
+        print(output.split('\n'), file=sys.stdout)
 
         return redirect(return_url, 302)
 
@@ -45,8 +45,8 @@ def create_app(config_name):
         if request.method == 'GET':
 
             global return_url
-
-            return_url = request.args.get("redir")[0] or "/pun/sys/dashboard"
+            if "redir" in request.args:
+                return_url = request.args.get("redir") or "/pun/sys/dashboard"
 
             return render_template("auth/SignUp.html", user=user)
 
@@ -60,6 +60,10 @@ def create_app(config_name):
 
             else:
                 return render_template("auth/SignUp.html", user=user)
+
+    with app.test_request_context(
+            '/', environ_base={'REMOTE_USER': 'short'}):
+        pass
 
     @app.errorhandler(403)
     def forbidden(error):
