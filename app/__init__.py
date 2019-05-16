@@ -30,7 +30,7 @@ def create_app(config_name):
 
             global return_url
 
-            return_url = request.args.get("redir")[0] or "/pun/sys/dashboard"
+            return_url = request.args.get("redir") or "/pun/sys/dashboard"
 
             return render_template("auth/SignUp.html", user=user)
 
@@ -57,7 +57,7 @@ def create_app(config_name):
 
         output = subprocess.check_output([tempString], shell=True)
 
-        print(output.split('\n')[7], file=sys.stdout)
+        print(output.split('\n'), file=sys.stdout)
 
         return redirect(return_url, 302)
 
