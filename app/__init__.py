@@ -30,7 +30,8 @@ def create_app(config_name):
 
             global return_url
 
-            return_url = request.args.get("redir") or "/pun/sys/dashboard"
+            if "redir" in request.args:
+                return_url = request.args.get("redir") or "/pun/sys/dashboard"
 
             return render_template("auth/SignUp.html", user=user)
 
@@ -60,6 +61,10 @@ def create_app(config_name):
         print(output.split('\n'), file=sys.stdout)
 
         return redirect(return_url, 302)
+
+    # with app.test_request_context(
+    #         '/', environ_base={'REMOTE_USER': 'short'}):
+    #     pass
 
     @app.errorhandler(403)
     def forbidden(error):
