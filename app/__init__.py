@@ -40,7 +40,7 @@ def create_app(config_name):
 
             if name != "":
 
-                return redirect(url_for('success', username=str(user), name=name))
+                return redirect(url_for('success', username=str(user), fullname=name))
 
             else:
                 return render_template("auth/SignUp.html", user=user)
