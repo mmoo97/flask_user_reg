@@ -20,6 +20,11 @@ def create_app(config_name):
 
     global return_url
     return_url = ''
+    global echo_var
+    echo_var = ''
+
+    if app.env.title() == 'Development':
+        echo_var = 'echo '
 
     @app.route('/', methods=['GET', 'POST'])
     def index():
@@ -52,12 +57,12 @@ def create_app(config_name):
         print(username, fullname, return_url, file=sys.stdout)
 
         # Deliver arguments to script.
-        tempString = 'ssh ohpc "sudo /opt/ohpc_user_create/user_create ' + username + ' \'' + fullname + '\'"'
-        print(tempString, file=sys.stdout)
+        tempString = echo_var + 'ssh ohpc "sudo /opt/ohpc_user_create/user_create ' + username + ' \'' + fullname + '\'"'
+        # print(tempString, file=sys.stdout)
 
         output = subprocess.check_output([tempString], shell=True)
 
-        print(output.split('\n'), file=sys.stdout)
+        print(output, file=sys.stdout)
 
         return redirect(return_url, 302)
 
