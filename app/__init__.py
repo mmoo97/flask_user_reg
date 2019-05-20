@@ -28,6 +28,9 @@ def create_app(config_name):
 
     @app.route('/', methods=['GET', 'POST'])
     def index():
+        if app.env.title() == 'Development':  # Test to make sure getting the remote user works
+
+            request.environ['REMOTE_USER'] = 'bobby'  # can be modified to whatever
 
         user = request.remote_user
 
