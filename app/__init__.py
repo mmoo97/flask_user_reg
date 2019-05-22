@@ -21,38 +21,17 @@ def create_app(config_name):
     global return_url
     return_url = ''
 
-    @app.route('/success/<name>/<username>')
-    def success(username, name):
-
-        global return_url
-        print(username, name, return_url, file=sys.stdout)
-
-        # Deliver arguments to script.
-        tempString = 'ssh ohpc "sudo /opt/ohpc_user_create/user_create ' + username + ' \'' + name + '\'"'
-        print(tempString, file=sys.stdout)
-
-        output = subprocess.check_output([tempString], shell=True)
-
-        print(output.split('\n')[7], file=sys.stdout)
-
-        return redirect(return_url, 302)
-
-    @app.route('/')
+    @app.route('/', methods=['GET', 'POST'])
     def index():
-
-        global return_url
-        return_url = request.args.get("redir")[0] or "/pun/sys/dashboard"
-
-        user = request.remote_user
-
-        return redirect(url_for("SignUp", user=user))
-
-    @app.route('/thing/', methods=['GET', 'POST'])
-    def SignUp():
 
         user = request.remote_user
 
         if request.method == 'GET':
+
+            global return_url
+
+            if "redir" in request.args:
+                return_url = request.args.get("redir") or "/pun/sys/dashboard"
 
             return render_template("auth/SignUp.html", user=user)
 
@@ -62,10 +41,30 @@ def create_app(config_name):
 
             if name != "":
 
-                return redirect(url_for('success', username=str(user), name=name))
+                return redirect(url_for('success', username=str(user), fullname=name))
 
             else:
                 return render_template("auth/SignUp.html", user=user)
+
+    @app.route('/success/<username>/<fullname>')
+    def success(username, fullname):
+
+        global return_url
+        print(username, fullname, return_url, file=sys.stdout)
+
+        # Deliver arguments to script.
+        tempString = 'ssh ohpc "sudo /opt/ohpc_user_create/user_create ' + username + ' \'' + fullname + '\'"'
+        print(tempString, file=sys.stdout)
+
+        output = subprocess.check_output([tempString], shell=True)
+
+        print(output.split('\n'), file=sys.stdout)
+
+        return redirect(return_url, 302)
+
+    # with app.test_request_context(
+    #         '/', environ_base={'REMOTE_USER': 'short'}):
+    #     pass
 
     @app.errorhandler(403)
     def forbidden(error):
