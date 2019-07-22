@@ -1,0 +1,16 @@
+<!doctype html>
+<html class="gr__rc_uab_edu">
+  <head>
+    {% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='/register/static/style/application.css') }}">
+    <title>{% block title %}{% endblock %} - My Webpage</title>
+    {% endblock %}
+  </head>
+  <body>
+    <div id="nav">{% block content %}{% endblock %}</div>
+    <div id="footer">
+      {% block footer %}
+      {% endblock %}
+    </div>
+  </body>
+</html>
