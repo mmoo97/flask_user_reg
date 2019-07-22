@@ -1,4 +1,5 @@
 {% extends "auth/base.html" %}
+<html class="gr__rc_uab_edu">
 {% block title %} User Register {% endblock %}
 {% block head %}
   {{ super() }}
@@ -16,11 +17,12 @@
 
 </style>
 {% endblock %}
-{% block content %}
+
 
 
 <body data-gr-c-s-loaded="true">
 <header>
+    {% block navi %}
   <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -44,7 +46,8 @@
     </div>
   </nav>
 </header>
-
+{% endblock %}
+{% block content %}
 <div class="container content" role="main" style="
     width: 800;
 ">
@@ -63,9 +66,8 @@
     </form>
     </div>
     </div>
-
-
-<footer>
+{% endblock %}
+{% block footer %}
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-6 col-sm-6">
@@ -75,6 +77,5 @@
       </div>
     </div>
   </div><!-- /.container -->
-</footer>
 
 {% endblock %}

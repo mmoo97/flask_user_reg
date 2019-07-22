@@ -1,5 +1,4 @@
 <!doctype html>
-<html class="gr__rc_uab_edu">
   <head>
     {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='/register/static/style/application.css') }}">
@@ -7,7 +6,8 @@
     {% endblock %}
   </head>
   <body>
-    <div id="nav">{% block content %}{% endblock %}</div>
+    <div id="nav">{% block navi %}{% endblock %}</div>
+    <div id="content">{% block content %}{% endblock %}</div>
     <div id="footer">
       {% block footer %}
       {% endblock %}
