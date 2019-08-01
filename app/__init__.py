@@ -6,10 +6,10 @@ from __future__ import print_function
 import os
 import sys
 import subprocess
+import time
 
 # third-party imports
-from flask import Flask, redirect, url_for, request
-from flask import render_template
+from flask import Flask, redirect, url_for, request, render_template, flash
 from flask_bootstrap import Bootstrap
 
 
@@ -53,18 +53,18 @@ def create_app(config_name):
         print(username, fullname, return_url, file=sys.stdout)
 
         # Deliver arguments to script.
-        tempString = 'ssh ohpc "sudo /opt/ohpc_user_create/user_create ' + username + ' \'' + fullname + '\'"'
+        tempString = 'ssh ohpc "sudo /opt/ohpc_user_create/user_create ' + username + " " + fullname + '"'
         print(tempString, file=sys.stdout)
 
-        output = subprocess.check_output([tempString], shell=True)
+        try:
 
-        print(output.split('\n'), file=sys.stdout)
+            subprocess.check_output([tempString], shell=True)
+            return redirect(return_url, 302)
 
-        return redirect(return_url, 302)
+        except:
+            flash("Registration Failed")
+            return redirect(return_url)
 
-    # with app.test_request_context(
-    #         '/', environ_base={'REMOTE_USER': 'short'}):
-    #     pass
 
     @app.errorhandler(403)
     def forbidden(error):
