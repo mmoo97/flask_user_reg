@@ -60,8 +60,19 @@
     <form action="." method="post">
       <div class="signUpContainer">
           <label for="name"><b>Full Name:<br></b></label>
-          <input class="form-control" type="text" placeholder="Enter Full Name" name="name">
+          <input class="form-control" type="text" placeholder="Enter Full Name" name="name" required>
           <input class="btn btn-primary btn-block" type="submit" value="submit">
+
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <div>
+                <strong style="color: #be051b; text-align: center;">{{ message }}</strong>
+            </div>
+      {% endfor %}
+   {% endif %}
+{% endwith %}
+
       </div>
     </form>
     </div>
@@ -79,3 +90,5 @@
   </div><!-- /.container -->
 
 {% endblock %}
+</body>
+</html>
