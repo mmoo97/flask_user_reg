@@ -10,7 +10,9 @@ import time
 
 # third-party imports
 from flask import Flask, redirect, url_for, request, render_template, flash
+from flask_wtf import FlaskForm
 from flask_bootstrap import Bootstrap
+from wtforms import StringField, SubmitField
 
 
 def create_app(config_name):
@@ -21,30 +23,43 @@ def create_app(config_name):
     global return_url
     return_url = ''
 
+    class MainForm(FlaskForm):
+        fullname = StringField('Username: ', [validators.DataRequired(), ])
+        submit = SubmitField('Submit')
+
     @app.route('/', methods=['GET', 'POST'])
     def index():
 
         user = request.remote_user
 
-        if request.method == 'GET':
+        username = False
+        form = MainForm()
+        if form.validate_on_submit():
+            username = form.username.data
+            form.username.data = ''
+            return redirect(url_for('success', username=str(user), fullname=name))
 
-            global return_url
+        return render_template('auth/SignUp.html', form=form, user=user)
 
-            if "redir" in request.args:
-                return_url = request.args.get("redir") or "/pun/sys/dashboard"
-
-            return render_template("auth/SignUp.html", user=user)
-
-        if request.method == 'POST':
-
-            name = request.form['name']
-
-            if name != "":
-
-                return redirect(url_for('success', username=str(user), fullname=name))
-
-            else:
-                return render_template("auth/SignUp.html", user=user)
+    # if request.method == 'GET':
+    #
+    #         global return_url
+    #
+    #         if "redir" in request.args:
+    #             return_url = request.args.get("redir") or "/pun/sys/dashboard"
+    #
+    #         return render_template("auth/SignUp.html", user=user)
+    #
+    #     if request.method == 'POST':
+    #
+    #         name = request.form['name']
+    #
+    #         if name != "":
+    #
+    #             return redirect(url_for('success', username=str(user), fullname=name))
+    #
+    #         else:
+    #             return render_template("auth/SignUp.html", user=user)
 
     @app.route('/success/<username>/<fullname>')
     def success(username, fullname):
