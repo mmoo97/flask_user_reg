@@ -12,7 +12,7 @@ import time
 from flask import Flask, redirect, url_for, request, render_template, flash
 from flask_wtf import FlaskForm
 from flask_bootstrap import Bootstrap
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, validators
 
 
 def create_app(config_name):
@@ -41,25 +41,25 @@ def create_app(config_name):
 
         return render_template('auth/SignUp.html', form=form, user=user)
 
-    # if request.method == 'GET':
-    #
-    #         global return_url
-    #
-    #         if "redir" in request.args:
-    #             return_url = request.args.get("redir") or "/pun/sys/dashboard"
-    #
-    #         return render_template("auth/SignUp.html", user=user)
-    #
-    #     if request.method == 'POST':
-    #
-    #         name = request.form['name']
-    #
-    #         if name != "":
-    #
-    #             return redirect(url_for('success', username=str(user), fullname=name))
-    #
-    #         else:
-    #             return render_template("auth/SignUp.html", user=user)
+        # if request.method == 'GET':
+        #
+        #         global return_url
+        #
+        #         if "redir" in request.args:
+        #             return_url = request.args.get("redir") or "/pun/sys/dashboard"
+        #
+        #         return render_template("auth/SignUp.html", user=user)
+        #
+        #     if request.method == 'POST':
+        #
+        #         name = request.form['name']
+        #
+        #         if name != "":
+        #
+        #             return redirect(url_for('success', username=str(user), fullname=name))
+        #
+        #         else:
+        #             return render_template("auth/SignUp.html", user=user)
 
     @app.route('/success/<username>/<fullname>')
     def success(username, fullname):
