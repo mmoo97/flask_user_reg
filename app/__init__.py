@@ -37,7 +37,7 @@ def create_app(config_name):
         if form.validate_on_submit():
             username = form.username.data
             form.username.data = ''
-            return redirect(url_for('success', username=str(user), fullname=name))
+            return redirect(url_for('success', username=str(user), fullname=username))
 
         return render_template('auth/SignUp.html', form=form, user=user)
 
