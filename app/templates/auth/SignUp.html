@@ -1,6 +1,12 @@
-<html class="gr__rc_uab_edu"><head>
-<title>User Register</title>
-<link rel="shortcut icon" type="image/x-icon" href="/public/favicon.ico">
+{% extends "auth/base.html" %}
+<html class="gr__rc_uab_edu">
+{% block title %} User Register {% endblock %}
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+    <link rel="shortcut icon" type="image/x-icon" href="/public/favicon.ico">
 <link rel="stylesheet" media="all" href="/register/static/style/application.css">
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,10 +16,13 @@
 }
 
 </style>
+{% endblock %}
 
-</head>
+
+
 <body data-gr-c-s-loaded="true">
 <header>
+    {% block body %}
   <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -37,8 +46,6 @@
     </div>
   </nav>
 </header>
-
-
 <div class="container content" role="main" style="
     width: 800;
 ">
@@ -68,9 +75,9 @@
     </form>
     </div>
     </div>
+{% endblock %}
 </body>
-
-<footer>
+{% block footer %}
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-6 col-sm-6">
@@ -80,5 +87,6 @@
       </div>
     </div>
   </div><!-- /.container -->
-</footer>
+
+{% endblock %}
 </html>
