@@ -24,12 +24,12 @@ def create_app(config_name):
     return_url = ''
 
     class MainForm(FlaskForm):
-        fullname = StringField('Username: ', [validators.DataRequired(), ])
+        fullname = StringField('Full Name: ', [validators.DataRequired(), ])
         submit = SubmitField('Submit')
 
     @app.route('/', methods=['GET', 'POST'])
     def index():
-
+        global return_url
         user = request.remote_user
 
         username = False
@@ -37,6 +37,8 @@ def create_app(config_name):
         if form.validate_on_submit():
             username = form.username.data
             form.username.data = ''
+            if "redir" in request.args:
+                return_url = request.args.get("redir") or "/pun/sys/dashboard"
             return redirect(url_for('success', username=str(user), fullname=username))
 
         return render_template('auth/SignUp.html', form=form, user=user)
