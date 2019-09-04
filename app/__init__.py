@@ -32,13 +32,15 @@ def create_app(config_name):
         global return_url
         user = request.remote_user
 
+        if "redir" in request.args:
+            return_url = request.args.get("redir") or "/pun/sys/dashboard"
+
         username = False
         form = MainForm()
-        if form.validate_on_submit():
-            username = form.username.data
-            form.username.data = ''
-            if "redir" in request.args:
-                return_url = request.args.get("redir") or "/pun/sys/dashboard"
+        if form.is_submitted():
+            username = form.fullname.data
+            form.fullname.data = ''
+
             return redirect(url_for('success', username=str(user), fullname=username))
 
         return render_template('auth/SignUp.html', form=form, user=user)
