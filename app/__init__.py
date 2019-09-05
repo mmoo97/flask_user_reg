@@ -61,8 +61,8 @@ def create_app(config_name):
             return redirect(return_url, 302)
 
         except:
-            flash("Registration Failed")
-            return redirect(return_url)
+            flash("Registration Failed. Please try again.")
+            return redirect(url_for('index'))
 
 
     @app.errorhandler(403)
