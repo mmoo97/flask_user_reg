@@ -7,7 +7,6 @@ import os
 import os.path
 import sys
 import time
-
 import datetime
 import subprocess
 # third-party imports
@@ -59,6 +58,7 @@ def create_app(config_name):
         print(tempString, file=sys.stdout)
 
         try:
+            
             time_stamp = time.strftime("%Y%m%d-%H%M%S")
             temp_path = "/var/www/ood/register/flask_user_reg"
             complete_file_name = os.path.join(temp_path, time_stamp+".txt")
