@@ -81,21 +81,28 @@
 {% if loading %}
             <div class="joyride-tip-guide" data-index="0" style="visibility: visible; display: block; top: 77.5px; left: 570px;"><span class="joyride-nub" style="display: none;"></span><div class="joyride-content-wrapper" role="dialog"><ol>
         <h4>
-          Processing User Registration:
+
+          Your account is pending creation...
+
         </h4>
-        <li>
-          <b>Create</b> a new job by copying from an existing job template directory or a previously run job directory.
-        </li>
-        <li>
-          <b>Edit</b> the files in the job via the file explorer.
-        </li>
-        <li>
-          <b>Submit</b> the job and monitor the progress from the "Job Composer" index page.
-        </li>
+                <br><p>
+                    This can take between 5-10 min.
+                </p>
+<!--        <li>-->
+<!--          <b>Create</b> a new job by copying from an existing job template directory or a previously run job directory.-->
+<!--        </li>-->
+<!--        <li>-->
+<!--          <b>Edit</b> the files in the job via the file explorer.-->
+<!--        </li>-->
+<!--        <li>-->
+<!--          <b>Submit</b> the job and monitor the progress from the "Job Composer" index page.-->
+<!--        </li>-->
       </ol>
+
                 <img class="col-sm-3 col-sm-offset-4" src="{{ url_for('static',
-  filename='img/loading.gif') }}" ng-show="loading">
+  filename='img/loading.gif') }}" ng-show="pending"> Pending
             </div></div>
+
     <div class="joyride-modal-bg" style="display: block;"></div>
 {% endif %}
 {% endblock %}
