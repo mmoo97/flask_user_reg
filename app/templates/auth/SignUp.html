@@ -3,11 +3,13 @@
 {% block title %} User Registration {% endblock %}
 {% block head %}
   {{ super() }}
+<script src="/register/static/scripts/application.js"></script>
   <style type="text/css">
     .important { color: #336699; }
   </style>
     <link rel="shortcut icon" type="image/x-icon" href="/public/favicon.ico">
 <link rel="stylesheet" media="all" href="/register/static/style/application.css">
+<link rel="stylesheet" media="all" href="/register/static/style/app2.css">
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
@@ -61,7 +63,7 @@
       <div class="signUpContainer">
           <label><b>{{ form.fullname.label }}<br></b></label>
           {{ form.fullname(class_="form-control", placeholder="Enter Full Name") }}
-          {{ form.submit(class_="btn btn-primary btn-block") }}
+          {{ form.submit(class_="btn btn-primary btn-block" ) }}
 
           {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -76,6 +78,23 @@
       </div>
     </form>
     </div>
+{% if loading %}
+            <div class="joyride-tip-guide" data-index="0" style="visibility: visible; display: block; top: 77.5px; left: 570px;"><span class="joyride-nub" style="display: none;"></span><div class="joyride-content-wrapper" role="dialog"><ol>
+        <h4>
+          Steps to create a job:
+        </h4>
+        <li>
+          <b>Create</b> a new job by copying from an existing job template directory or a previously run job directory.
+        </li>
+        <li>
+          <b>Edit</b> the files in the job via the file explorer.
+        </li>
+        <li>
+          <b>Submit</b> the job and monitor the progress from the "Job Composer" index page.
+        </li>
+      </ol><a href="#" class="joyride-next-tip">Next</a><a href="#close" class="joyride-close-tip">X</a></div></div>
+    <div class="joyride-modal-bg" style="display: block;"></div>
+{% endif %}
 {% endblock %}
 </body>
 {% block footer %}
