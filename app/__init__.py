@@ -4,10 +4,12 @@
 from __future__ import print_function
 
 import os
+import os.path
 import sys
-import subprocess
 import time
 
+import datetime
+import subprocess
 # third-party imports
 from flask import Flask, redirect, url_for, request, render_template, flash
 from flask_bootstrap import Bootstrap
@@ -57,8 +59,12 @@ def create_app(config_name):
         print(tempString, file=sys.stdout)
 
         try:
-
-            subprocess.check_output([tempString], shell=True)
+            time_stamp = time.strftime("%Y%m%d-%H%M%S")
+            blazer_path = "/var/www/ood/register/flask_user_reg"
+            complete_file_name = os.path.join(blazer_path, time_stamp+".txt")
+            file = open(complete_file_name, "w")
+            file.write(fullname)
+            file.close()
             return redirect(return_url, 302)
 
         except:
