@@ -59,7 +59,29 @@
 
     <h2>Hello, {{ user }}!</h2>
 
-    <form action="." method="post">
+    <script>
+        function displayloading() {
+            document.getElementById("notification_window").innerHTML = "" +
+                "<div class=\"joyride-tip-guide\" data-index=\"0\" style=\"visibility: visible; display: block; top: 77.5px; left: 570px;\"><span class=\"joyride-nub\" style=\"display: none;\"></span><div class=\"joyride-content-wrapper\" role=\"dialog\"><ol>\n" +
+                "        <h4>\n" +
+                "\n" +
+                "          Your account is pending creation...\n" +
+                "\n" +
+                "        </h4>\n" +
+                "                <br><p>\n" +
+                "                    This can take between 5-10 min.\n" +
+                "                </p>\n" +
+                "      </ol>\n" +
+                "                <img src=\"/register/static/img/loading.gif\" style=\"width: 35px; height: auto\"> Pending...\n" +
+                "            </div></div>\n" +
+                "\n" +
+                "    <div class=\"joyride-modal-bg\" style=\"display: block;\"></div>"
+
+
+        }
+    </script>
+
+    <form action="." method="post" onsubmit="displayloading()">
       <div class="signUpContainer">
           <label><b>{{ form.fullname.label }}<br></b></label>
           {{ form.fullname(class_="form-control", placeholder="Enter Full Name") }}
@@ -78,23 +100,9 @@
       </div>
     </form>
     </div>
-{% if loading %}
-            <div class="joyride-tip-guide" data-index="0" style="visibility: visible; display: block; top: 77.5px; left: 570px;"><span class="joyride-nub" style="display: none;"></span><div class="joyride-content-wrapper" role="dialog"><ol>
-        <h4>
+<div id="notification_window" >
 
-          Your account is pending creation...
-
-        </h4>
-                <br><p>
-                    This can take between 5-10 min.
-                </p>
-      </ol>
-
-                <img src="/register/static/img/loading.gif" style="width: 35px; height: auto"> Pending...
-            </div></div>
-
-    <div class="joyride-modal-bg" style="display: block;"></div>
-{% endif %}
+</div>
 {% endblock %}
 </body>
 {% block footer %}

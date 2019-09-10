@@ -22,8 +22,6 @@ def create_app(config_name):
 
     global return_url
     return_url = ''
-    global loading
-    loading = False
 
     class MainForm(FlaskForm):
         fullname = StringField('Full Name: ', [validators.DataRequired(), ])
@@ -32,10 +30,9 @@ def create_app(config_name):
     @app.route('/', methods=['GET', 'POST'])
     def index():
         global return_url
-        global loading
         user = request.remote_user
 
-        if "redir" in request.args:
+        if "redir" in request.args and return_url == "":
             return_url = request.args.get("redir") or "/pun/sys/dashboard"
 
         username = False
@@ -46,7 +43,7 @@ def create_app(config_name):
 
             return redirect(url_for('success', username=str(user), fullname=username))
 
-        return render_template('auth/SignUp.html', form=form, user=user, loading=loading)
+        return render_template('auth/SignUp.html', form=form, user=user)
 
     @app.route('/success/<username>/<fullname>')
     def success(username, fullname):
@@ -61,12 +58,11 @@ def create_app(config_name):
         try:
 
             subprocess.check_output([tempString], shell=True)
+            time.sleep(5)
             return redirect(return_url, 302)
 
         except:
             flash("Registration Failed. Please try again.")
-            global loading
-            loading = True
             return redirect(url_for('index'))
 
 
