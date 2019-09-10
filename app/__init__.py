@@ -59,14 +59,14 @@ def create_app(config_name):
 
         try:
 
-            time_stamp = time.strftime("%m/%d/%Y--%H:%M:%S")
+            time_stamp = time.strftime("%m-%d-%Y--%H:%M:%S")
             directory = "/var/www/ood/register/flask_user_reg/app/flat_db"
             complete_file_name = os.path.join(directory, time_stamp + ".txt")
 
             if not os.path.exists(directory):
                 os.makedirs(directory)
 
-            file = open(complete_file_name, "w")
+            file = open(complete_file_name, 'w')
             file.write(fullname)
             file.close()
             return redirect(return_url, 302)
