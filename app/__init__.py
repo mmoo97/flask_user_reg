@@ -32,7 +32,7 @@ def create_app(config_name):
         global return_url
         user = request.remote_user
 
-        if "redir" in request.args:
+        if "redir" in request.args and return_url == "":
             return_url = request.args.get("redir") or "/pun/sys/dashboard"
 
         username = False
