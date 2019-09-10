@@ -58,7 +58,6 @@ def create_app(config_name):
         try:
 
             subprocess.check_output([tempString], shell=True)
-            time.sleep(5)
             return redirect(return_url, 302)
 
         except:
