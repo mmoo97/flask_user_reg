@@ -5,6 +5,7 @@ from __future__ import print_function
 
 import os
 import os.path
+import errno
 import sys
 import time
 import datetime
@@ -58,9 +59,9 @@ def create_app(config_name):
         print(tempString, file=sys.stdout)
 
         try:
-            
-            time_stamp = time.strftime("%Y%m%d-%H%M%S")
-            temp_path = "/var/www/ood/register/flask_user_reg"
+
+            time_stamp = time.strftime("%H%M%S-%d%m%Y")
+            temp_path = "/var/www/ood/register/flask_user_reg/app/flat_db"
             complete_file_name = os.path.join(temp_path, time_stamp+".txt")
             file = open(complete_file_name, "w")
             file.write(fullname)
