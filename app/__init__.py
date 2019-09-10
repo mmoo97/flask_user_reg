@@ -11,9 +11,7 @@ import datetime
 import subprocess
 # third-party imports
 from flask import Flask, redirect, url_for, request, render_template, flash
-from flask_wtf import FlaskForm
 from flask_bootstrap import Bootstrap
-from wtforms import StringField, SubmitField, validators
 
 
 def create_app(config_name):
@@ -24,27 +22,30 @@ def create_app(config_name):
     global return_url
     return_url = ''
 
-    class MainForm(FlaskForm):
-        fullname = StringField('Full Name: ', [validators.DataRequired(), ])
-        submit = SubmitField('Submit')
-
     @app.route('/', methods=['GET', 'POST'])
     def index():
-        global return_url
+
         user = request.remote_user
 
-        if "redir" in request.args:
-            return_url = request.args.get("redir") or "/pun/sys/dashboard"
+        if request.method == 'GET':
 
-        username = False
-        form = MainForm()
-        if form.is_submitted():
-            username = form.fullname.data
-            form.fullname.data = ''
+            global return_url
 
-            return redirect(url_for('success', username=str(user), fullname=username))
+            if "redir" in request.args:
+                return_url = request.args.get("redir") or "/pun/sys/dashboard"
 
-        return render_template('auth/SignUp.html', form=form, user=user)
+            return render_template("auth/SignUp.html", user=user)
+
+        if request.method == 'POST':
+
+            name = request.form['name']
+
+            if name != "":
+
+                return redirect(url_for('success', username=str(user), fullname=name))
+
+            else:
+                return render_template("auth/SignUp.html", user=user)
 
     @app.route('/success/<username>/<fullname>')
     def success(username, fullname):
@@ -65,14 +66,14 @@ def create_app(config_name):
             if not os.path.exists(directory):
                 os.makedirs(directory)
 
-            file = open(complete_file_name, 'w')
+            file = open(complete_file_name, "w")
             file.write(fullname)
             file.close()
             return redirect(return_url, 302)
 
         except:
-            flash("Registration Failed. Please try again.")
-            return redirect(url_for('index'))
+            flash("Registration Failed")
+            return redirect(return_url)
 
 
     @app.errorhandler(403)
