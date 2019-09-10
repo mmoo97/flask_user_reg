@@ -59,7 +59,7 @@ def create_app(config_name):
 
         try:
 
-            time_stamp = time.strftime("%H%M%S-%d%m%Y")
+            time_stamp = time.strftime("%m/%d/%Y--%H:%M:%S")
             directory = "/var/www/ood/register/flask_user_reg/app/flat_db"
 
             if not os.path.exists(directory):
