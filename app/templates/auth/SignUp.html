@@ -1,6 +1,6 @@
 {% extends "auth/base.html" %}
 <html class="gr__rc_uab_edu">
-{% block title %} User Register {% endblock %}
+{% block title %} User Registration {% endblock %}
 {% block head %}
   {{ super() }}
   <style type="text/css">
@@ -46,20 +46,22 @@
     </div>
   </nav>
 </header>
-<div class="container content" role="main" style="
-    width: 800;
-">
+<div class="container content" role="main" style="width: 625px">
 
-    <div class="col-md-12">
+    <div style="position:relative;">
+  <img alt="logo" height="100" style="margin-bottom: 20px" src="/register/static/img/cheaha-logo-a605de0aecd3006b82a5ee30a6d0cb8cd9bf8b7e836296cc293eac746a4c2b11.png">
+  <a href="https://tinyurl.com/cheahaAL" target="_blank">
+    <div style="float:left;position:absolute;display:block;left:310px;top:-6px;padding:10px 20px;"> </div>
+  </a>
+</div>
 
-        <img class="header-logo" height="100" style="margin-bottom: 20px" src="/register/static/img/cheaha-logo-a605de0aecd3006b82a5ee30a6d0cb8cd9bf8b7e836296cc293eac746a4c2b11.png">
     <h2>Hello, {{ user }}!</h2>
 
     <form action="." method="post">
       <div class="signUpContainer">
-          <label for="name"><b>Full Name:<br></b></label>
-          <input class="form-control" type="text" placeholder="Enter Full Name" name="name" required>
-          <input class="btn btn-primary btn-block" type="submit" value="submit">
+          <label><b>{{ form.fullname.label }}<br></b></label>
+          {{ form.fullname(class_="form-control", placeholder="Enter Full Name") }}
+          {{ form.submit(class_="btn btn-primary btn-block") }}
 
           {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -73,7 +75,6 @@
 
       </div>
     </form>
-    </div>
     </div>
 {% endblock %}
 </body>
