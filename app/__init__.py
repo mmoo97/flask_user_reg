@@ -58,8 +58,9 @@ def create_app(config_name):
         print(tempString, file=sys.stdout)
 
         try:
-
-            time_stamp = time.strftime("%m-%d-%Y--%H:%M:%S")
+            # function to write out a flatdb with the name of the file being a timestamp and the content
+            # of the file beieng blazerID the user submitted from the flask form (fullname)
+            time_stamp = time.strftime("%m-%d-%Y_%H:%M:%S")
             directory = "/var/www/ood/register/flask_user_reg/app/flat_db"
             complete_file_name = os.path.join(directory, time_stamp + ".txt")
 
