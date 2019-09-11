@@ -27,7 +27,8 @@ def create_app(config_name):
 
         user = request.remote_user
 
-        if request.method == 'GET':
+        if "redir" in request.args and return_url == "":
+            return_url = request.args.get("redir") or "/pun/sys/dashboard"
 
             global return_url
 

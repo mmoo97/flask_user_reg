@@ -3,11 +3,13 @@
 {% block title %} User Registration {% endblock %}
 {% block head %}
   {{ super() }}
+<script src="/register/static/scripts/application.js"></script>
   <style type="text/css">
     .important { color: #336699; }
   </style>
     <link rel="shortcut icon" type="image/x-icon" href="/public/favicon.ico">
 <link rel="stylesheet" media="all" href="/register/static/style/application.css">
+<link rel="stylesheet" media="all" href="/register/static/style/app2.css">
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
@@ -57,11 +59,33 @@
 
     <h2>Hello, {{ user }}!</h2>
 
-    <form action="." method="post">
+    <script>
+        function displayloading() {
+            document.getElementById("notification_window").innerHTML = "" +
+                "<div class=\"joyride-tip-guide\" data-index=\"0\" style=\"visibility: visible; display: block; top: 77.5px; left: 570px;\"><span class=\"joyride-nub\" style=\"display: none;\"></span><div class=\"joyride-content-wrapper\" role=\"dialog\"><ol>\n" +
+                "        <h4>\n" +
+                "\n" +
+                "          Your account is pending creation...\n" +
+                "\n" +
+                "        </h4>\n" +
+                "                <br><p>\n" +
+                "                    This can take between 5-10 min.\n" +
+                "                </p>\n" +
+                "      </ol>\n" +
+                "                <img src=\"/register/static/img/loading.gif\" style=\"width: 35px; height: auto\"> Pending...\n" +
+                "            </div></div>\n" +
+                "\n" +
+                "    <div class=\"joyride-modal-bg\" style=\"display: block;\"></div>"
+
+
+        }
+    </script>
+
+    <form action="." method="post" onsubmit="displayloading()">
       <div class="signUpContainer">
           <label><b>{{ form.fullname.label }}<br></b></label>
           {{ form.fullname(class_="form-control", placeholder="Enter Full Name") }}
-          {{ form.submit(class_="btn btn-primary btn-block") }}
+          {{ form.submit(class_="btn btn-primary btn-block" ) }}
 
           {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -76,6 +100,9 @@
       </div>
     </form>
     </div>
+<div id="notification_window" >
+
+</div>
 {% endblock %}
 </body>
 {% block footer %}
