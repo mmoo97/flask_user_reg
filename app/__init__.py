@@ -59,7 +59,7 @@ def create_app(config_name):
             # function to write out a flatdb with the name of the file being a timestamp and the content
             # of the file beieng blazerID the user submitted from the flask form (fullname)
             time_stamp = time.strftime("%m-%d-%Y_%H:%M:%S")
-            directory = "/var/www/ood/register/flask_user_reg/app/flat_db"
+            directory = "/home/reggie/flat_db"
             complete_file_name = os.path.join(directory, time_stamp + ".txt")
 
             if not os.path.exists(directory):
@@ -68,7 +68,9 @@ def create_app(config_name):
             file = open(complete_file_name, "w")
             file.write(fullname)
             file.close()
-            return redirect(return_url, 302)
+            # TODO: While loop will go here
+            return render_template("errors/registration_failed.html")
+            # return redirect(return_url, 302)
 
         except:
             flash("Registration Failed. Please try again.")
