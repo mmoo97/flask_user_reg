@@ -4,14 +4,15 @@
 from __future__ import print_function
 
 import os
-import os.path
 import sys
-import time
-import datetime
 import subprocess
+import time
+
 # third-party imports
 from flask import Flask, redirect, url_for, request, render_template, flash
+from flask_wtf import FlaskForm
 from flask_bootstrap import Bootstrap
+from wtforms import StringField, SubmitField, validators
 
 
 def create_app(config_name):
@@ -22,31 +23,27 @@ def create_app(config_name):
     global return_url
     return_url = ''
 
+    class MainForm(FlaskForm):
+        fullname = StringField('Full Name: ', [validators.DataRequired(), ])
+        submit = SubmitField('Submit')
+
     @app.route('/', methods=['GET', 'POST'])
     def index():
-
+        global return_url
         user = request.remote_user
 
         if "redir" in request.args and return_url == "":
             return_url = request.args.get("redir") or "/pun/sys/dashboard"
 
-            global return_url
+        username = False
+        form = MainForm()
+        if form.is_submitted():
+            username = form.fullname.data
+            form.fullname.data = ''
 
-            if "redir" in request.args:
-                return_url = request.args.get("redir") or "/pun/sys/dashboard"
+            return redirect(url_for('success', username=str(user), fullname=username))
 
-            return render_template("auth/SignUp.html", user=user)
-
-        if request.method == 'POST':
-
-            name = request.form['name']
-
-            if name != "":
-
-                return redirect(url_for('success', username=str(user), fullname=name))
-
-            else:
-                return render_template("auth/SignUp.html", user=user)
+        return render_template('auth/SignUp.html', form=form, user=user)
 
     @app.route('/success/<username>/<fullname>')
     def success(username, fullname):
@@ -59,23 +56,13 @@ def create_app(config_name):
         print(tempString, file=sys.stdout)
 
         try:
-            # function to write out a flatdb with the name of the file being a timestamp and the content
-            # of the file beieng blazerID the user submitted from the flask form (fullname)
-            time_stamp = time.strftime("%m-%d-%Y_%H:%M:%S")
-            directory = "/var/www/ood/register/flask_user_reg/app/flat_db"
-            complete_file_name = os.path.join(directory, time_stamp + ".txt")
 
-            if not os.path.exists(directory):
-                os.makedirs(directory)
-
-            file = open(complete_file_name, "w")
-            file.write(fullname)
-            file.close()
+            subprocess.check_output([tempString], shell=True)
             return redirect(return_url, 302)
 
         except:
-            flash("Registration Failed")
-            return redirect(return_url)
+            flash("Registration Failed. Please try again.")
+            return redirect(url_for('index'))
 
 
     @app.errorhandler(403)
