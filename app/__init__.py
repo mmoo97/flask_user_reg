@@ -69,6 +69,9 @@ def create_app(config_name):
             file.write(fullname)
             file.close()
             # TODO: While loop will go here
+            while ".done" is not file.name:
+                time.sleep(10)
+
             return render_template("errors/registration_failed.html")
             # return redirect(return_url, 302)
 
