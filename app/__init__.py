@@ -14,9 +14,37 @@ from flask_wtf import FlaskForm
 from flask_bootstrap import Bootstrap
 from wtforms import StringField, SubmitField, validators
 
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
+from watchdog.utils import dirsnapshot
+
+
+global snap_before
+global snap_after
+global snap_diff
+
+
+class MyHandler(FileSystemEventHandler):
+    def on_modified(self, event):
+
+        global snap_before
+        global snap_after
+        global snap_diff
+
+        # print(event.src_path + " modified.")
+        snap_after = dirsnapshot.DirectorySnapshot("flat_db/", True)
+        snap_diff = dirsnapshot.DirectorySnapshotDiff(snap_before, snap_after)
+        # print("Created: ", snap_diff.files_created)
+        # print("Deleted: ", snap_diff.files_deleted)
+        # print("Modified: ", snap_diff.files_modified)
+        # print("Moved: ", snap_diff.files_moved)
+
+    def on_created(self, event):
+        # if (time_stamp + ".done") in
+        print(event.src_path + " created.")
+
 
 def create_app(config_name):
-
     app = Flask(__name__)
     Bootstrap(app)
 
@@ -49,6 +77,7 @@ def create_app(config_name):
     def success(username, fullname):
 
         global return_url
+        global snap_before
         print(username, fullname, return_url, file=sys.stdout)
 
         # Deliver arguments to script.
@@ -58,6 +87,14 @@ def create_app(config_name):
         try:
             # function to write out a flatdb with the name of the file being a timestamp and the content
             # of the file beieng blazerID the user submitted from the flask form (fullname)
+            event_handler = MyHandler()
+            observer = Observer()
+            observer.schedule(event_handler, path='/home/reggie/flat_db/', recursive=True)
+            print(event_handler)
+            observer.start()
+
+            snap_before = dirsnapshot.DirectorySnapshot("home/reggie/flat_db/", True)
+
             time_stamp = time.strftime("%m-%d-%Y_%H:%M:%S")
             directory = "/home/reggie/flat_db"
             complete_file_name = os.path.join(directory, time_stamp + ".txt")
@@ -66,16 +103,19 @@ def create_app(config_name):
                 os.makedirs(directory)
 
             file = open(complete_file_name, "w")
-            file.write(fullname)
+            file.write("Hey")
+
+            while True:
+                # TODO: While loop will go here
+                time.sleep(5)
+            observer.stop()
             file.close()
-            # TODO: While loop will go here
             return render_template("errors/registration_failed.html")
             # return redirect(return_url, 302)
 
         except:
             flash("Registration Failed. Please try again.")
             return redirect(url_for('index'))
-
 
     @app.errorhandler(403)
     def forbidden(error):
