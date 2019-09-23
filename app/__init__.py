@@ -40,7 +40,7 @@ class MyHandler(FileSystemEventHandler):
         # print("Moved: ", snap_diff.files_moved)
 
     def on_created(self, event):
-        # if (time_stamp + ".done") in
+
         print(event.src_path + " created.")
 
 
