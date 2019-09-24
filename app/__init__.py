@@ -22,6 +22,9 @@ from watchdog.utils import dirsnapshot
 global snap_before
 global snap_after
 global snap_diff
+global observing
+
+observing = False
 
 
 class MyHandler(FileSystemEventHandler):
@@ -30,10 +33,19 @@ class MyHandler(FileSystemEventHandler):
         global snap_before
         global snap_after
         global snap_diff
+        global observing
 
         # print(event.src_path + " modified.")
         snap_after = dirsnapshot.DirectorySnapshot("flat_db/", True)
         snap_diff = dirsnapshot.DirectorySnapshotDiff(snap_before, snap_after)
+
+        try:
+
+            if ("flat_db/" + time_stamp + ".done" + ".txt") in snap_diff.files_moved[0]:
+                observing = False
+                # print("YES!")
+        except:
+            pass
         # print("Created: ", snap_diff.files_created)
         # print("Deleted: ", snap_diff.files_deleted)
         # print("Modified: ", snap_diff.files_modified)
@@ -45,17 +57,17 @@ class MyHandler(FileSystemEventHandler):
 
 
 def create_app(config_name):
-    app = Flask(__name__)
-    Bootstrap(app)
+    app = Flask(__name__) # initialization of the flask appo
+    Bootstrap(app) # allowing app to use bootstrap
 
     global return_url
     return_url = ''
 
-    class MainForm(FlaskForm):
+    class MainForm(FlaskForm): # class for the form itself
         fullname = StringField('Full Name: ', [validators.DataRequired(), ])
         submit = SubmitField('Submit')
 
-    @app.route('/', methods=['GET', 'POST'])
+    @app.route('/', methods=['GET', 'POST']) # initial route to display the reg page
     def index():
         global return_url
         user = request.remote_user
@@ -87,33 +99,35 @@ def create_app(config_name):
         try:
             # function to write out a flatdb with the name of the file being a timestamp and the content
             # of the file beieng blazerID the user submitted from the flask form (fullname)
-            event_handler = MyHandler()
-            observer = Observer()
-            observer.schedule(event_handler, path='/home/reggie/flat_db/', recursive=True)
-            print(event_handler)
-            observer.start()
-
-            snap_before = dirsnapshot.DirectorySnapshot("home/reggie/flat_db/", True)
 
             time_stamp = time.strftime("%m-%d-%Y_%H:%M:%S")
-            directory = "/home/reggie/flat_db"
+            directory = "/home/reggie/flat_db/"
             complete_file_name = os.path.join(directory, time_stamp + ".txt")
 
             if not os.path.exists(directory):
                 os.makedirs(directory)
 
+            event_handler = MyHandler()
+            observer = Observer()
+            observer.schedule(event_handler, path='/home/reggie/flat_db', recursive=True)
+            observer.start()
+
             file = open(complete_file_name, "w")
             file.write("Hey")
 
-            while True:
+            snap_before = dirsnapshot.DirectorySnapshot("/home/reggie/flat_db", True)
+
+            while observing:
                 # TODO: While loop will go here
+
                 time.sleep(5)
             observer.stop()
             file.close()
             return render_template("errors/registration_failed.html")
             # return redirect(return_url, 302)
 
-        except:
+        except Exception as e:
+            print(e)
             flash("Registration Failed. Please try again.")
             return redirect(url_for('index'))
 
