@@ -36,20 +36,22 @@ class MyHandler(FileSystemEventHandler):
         global observing
 
         # print(event.src_path + " modified.")
-        snap_after = dirsnapshot.DirectorySnapshot("flat_db/", True)
+        snap_after = dirsnapshot.DirectorySnapshot("/home/reggie/flat_db", True)
         snap_diff = dirsnapshot.DirectorySnapshotDiff(snap_before, snap_after)
 
         try:
 
-            if ("flat_db/" + time_stamp + ".done" + ".txt") in snap_diff.files_moved[0]:
+            if ("/home/reggie/flat_db/" + time_stamp + ".done") in snap_diff.files_moved:
                 observing = False
                 # print("YES!")
-        except:
+        except Exception as e:
+            print(e)
+            observing = False
             pass
         # print("Created: ", snap_diff.files_created)
         # print("Deleted: ", snap_diff.files_deleted)
         # print("Modified: ", snap_diff.files_modified)
-        # print("Moved: ", snap_diff.files_moved)
+        print("Moved: ", snap_diff.files_moved)
 
     def on_created(self, event):
 
@@ -90,6 +92,7 @@ def create_app(config_name):
 
         global return_url
         global snap_before
+        global observing
         print(username, fullname, return_url, file=sys.stdout)
 
         # Deliver arguments to script.
@@ -111,6 +114,8 @@ def create_app(config_name):
             observer = Observer()
             observer.schedule(event_handler, path='/home/reggie/flat_db', recursive=True)
             observer.start()
+
+            observing = True
 
             file = open(complete_file_name, "w")
             file.write("Hey")
