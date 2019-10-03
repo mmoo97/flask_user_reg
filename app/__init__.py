@@ -23,6 +23,7 @@ global snap_before
 global snap_after
 global snap_diff
 global observing
+global time_stamp
 
 observing = False
 
@@ -34,6 +35,7 @@ class MyHandler(FileSystemEventHandler):
         global snap_after
         global snap_diff
         global observing
+        global time_stamp
 
         # print(event.src_path + " modified.")
         snap_after = dirsnapshot.DirectorySnapshot("/home/reggie/flat_db", True)
@@ -41,13 +43,12 @@ class MyHandler(FileSystemEventHandler):
 
         try:
 
-            if ("/home/reggie/flat_db/" + time_stamp + ".done") in snap_diff.files_moved:
+            if ("/home/reggie/flat_db/" + time_stamp + ".done") in snap_diff.files_moved[0]:
+
                 observing = False
                 # print("YES!")
         except Exception as e:
             print(e)
-            observing = False
-            pass
         # print("Created: ", snap_diff.files_created)
         # print("Deleted: ", snap_diff.files_deleted)
         # print("Modified: ", snap_diff.files_modified)
@@ -93,6 +94,7 @@ def create_app(config_name):
         global return_url
         global snap_before
         global observing
+        global time_stamp
         print(username, fullname, return_url, file=sys.stdout)
 
         # Deliver arguments to script.
