@@ -73,20 +73,20 @@ def create_app(config_name):
     @app.route('/', methods=['GET', 'POST']) # initial route to display the reg page
     def index():
         global return_url
-        user = request.remote_user
+        username = request.remote_user
 
         if "redir" in request.args and return_url == "":
             return_url = request.args.get("redir") or "/pun/sys/dashboard"
 
-        username = False
+        user_input = False
         form = MainForm()
         if form.is_submitted():
-            username = form.fullname.data
+            fullname = form.fullname.data
             form.fullname.data = ''
 
-            return redirect(url_for('success', username=str(user), fullname=username))
+            return redirect(url_for('success', username=str(user_input), fullname=fullname))
 
-        return render_template('auth/SignUp.html', form=form, user=user)
+        return render_template('auth/SignUp.html', form=form, user=username)
 
     @app.route('/success/<username>/<fullname>')
     def success(username, fullname):
