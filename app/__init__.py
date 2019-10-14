@@ -136,7 +136,7 @@ def create_app(config_name):
 
         except Exception as e:
             print(e)
-            flash("Registration Failed. Please try again.") # show error message upon
+            flash("Registration Failed. Please try again.") # show error message upon failure
             return redirect(url_for('index'))
 
     # misc page error catching
