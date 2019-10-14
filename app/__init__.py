@@ -28,7 +28,7 @@ global time_stamp
 observing = False
 
 
-class MyHandler(FileSystemEventHandler):
+class MyHandler(FileSystemEventHandler): # Watchdog handler class to take action when observation requested
     def on_modified(self, event):
 
         global snap_before
@@ -38,12 +38,12 @@ class MyHandler(FileSystemEventHandler):
         global time_stamp
 
         # print(event.src_path + " modified.")
-        snap_after = dirsnapshot.DirectorySnapshot("/home/reggie/flat_db", True)
-        snap_diff = dirsnapshot.DirectorySnapshotDiff(snap_before, snap_after)
+        snap_after = dirsnapshot.DirectorySnapshot("/home/reggie/flat_db", True) # take post flat_db creation snapshot of the directory
+        snap_diff = dirsnapshot.DirectorySnapshotDiff(snap_before, snap_after) # object to compare the initial snapshot with the final snapshot
 
         try:
 
-            if ("/home/reggie/flat_db/" + time_stamp + ".done") in snap_diff.files_moved[0]:
+            if ("/home/reggie/flat_db/" + time_stamp + ".done") in snap_diff.files_moved[0]: # check for timestamped string with .done extention in flat_db
 
                 observing = False
                 # print("YES!")
@@ -52,7 +52,7 @@ class MyHandler(FileSystemEventHandler):
         # print("Created: ", snap_diff.files_created)
         # print("Deleted: ", snap_diff.files_deleted)
         # print("Modified: ", snap_diff.files_modified)
-        print("Moved: ", snap_diff.files_moved)
+        # print("Moved: ", snap_diff.files_moved)
 
     def on_created(self, event):
 
@@ -60,7 +60,7 @@ class MyHandler(FileSystemEventHandler):
 
 
 def create_app(config_name):
-    app = Flask(__name__) # initialization of the flask appo
+    app = Flask(__name__) # initialization of the flask app
     Bootstrap(app) # allowing app to use bootstrap
 
     global return_url
@@ -75,14 +75,14 @@ def create_app(config_name):
         global return_url
         username = request.remote_user
 
-        if "redir" in request.args and return_url == "":
+        if "redir" in request.args and return_url == "": # check for redir arg in url
             return_url = request.args.get("redir") or "/pun/sys/dashboard"
 
         fullname = False
-        form = MainForm()
+        form = MainForm() # initialize form object
         if form.is_submitted():
             fullname = form.fullname.data
-            form.fullname.data = ''
+            form.fullname.data = '' # reset form data upon capture
 
             return redirect(url_for('success', username=str(username), fullname=fullname))
 
@@ -97,7 +97,7 @@ def create_app(config_name):
         global time_stamp
         print(username, fullname, return_url, file=sys.stdout)
 
-        # Deliver arguments to script.
+        # Deliver arguments to script. (for local vagrant implementation)
         tempString = 'ssh ohpc "sudo /opt/ohpc_user_create/user_create ' + username + " " + fullname + '"'
         print(tempString, file=sys.stdout)
 
@@ -112,31 +112,34 @@ def create_app(config_name):
             if not os.path.exists(directory):
                 os.makedirs(directory)
 
-            event_handler = MyHandler()
-            observer = Observer()
+            event_handler = MyHandler() # initialize handler
+            observer = Observer() # initialize obsever to relay to handler
             observer.schedule(event_handler, path='/home/reggie/flat_db', recursive=True)
             observer.start()
 
             observing = True
 
-            file = open(complete_file_name, "w")
+            file = open(complete_file_name, "w") # create time stamped file to be queued
             file.write("Hey")
 
+            # take an initial state snapshot of the db after file queued
             snap_before = dirsnapshot.DirectorySnapshot("/home/reggie/flat_db", True)
 
             while observing:
-                # TODO: While loop will go here
+                # TODO: Update page ui element dynamically
 
                 time.sleep(5)
             observer.stop()
             file.close()
-            return render_template("errors/registration_failed.html")
+            return render_template("errors/registration_failed.html") # Todo: replace template with redirect
             # return redirect(return_url, 302)
 
         except Exception as e:
             print(e)
-            flash("Registration Failed. Please try again.")
+            flash("Registration Failed. Please try again.") # show error message upon
             return redirect(url_for('index'))
+
+    # misc page error catching
 
     @app.errorhandler(403)
     def forbidden(error):
