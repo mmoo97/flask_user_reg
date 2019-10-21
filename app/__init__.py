@@ -107,7 +107,7 @@ def create_app(config_name):
 
             time_stamp = time.strftime("%m-%d-%Y_%H:%M:%S")
             directory = "/home/reggie/flat_db/"
-            complete_file_name = os.path.join(directory, time_stamp + ".txt")
+            complete_file_name = os.path.join(directory, time_stamp + "_" + request.remote_user + ".txt")
 
             if not os.path.exists(directory):
                 os.makedirs(directory)
