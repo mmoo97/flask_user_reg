@@ -1,5 +1,4 @@
-<script>
-        function displayloading() {
+function displayloading() {
             document.getElementById("notification_window").innerHTML = "" +
                 "<div class=\"joyride-tip-guide\" data-index=\"0\" style=\"visibility: visible; display: block; top: 77.5px; left: 570px;\"><span class=\"joyride-nub\" style=\"display: none;\"></span><div class=\"joyride-content-wrapper\" role=\"dialog\"><ol>\n" +
                 "        <h4>\n" +
@@ -18,4 +17,3 @@
 
 
         }
-    </script>
