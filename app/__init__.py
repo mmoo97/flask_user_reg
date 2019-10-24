@@ -12,6 +12,7 @@ import time
 from flask import Flask, redirect, url_for, request, render_template, flash
 from flask_wtf import FlaskForm
 from flask_bootstrap import Bootstrap
+from flask_socketio import SockerIO, send
 from wtforms import StringField, SubmitField, validators
 
 from watchdog.observers import Observer
@@ -62,6 +63,17 @@ class MyHandler(FileSystemEventHandler): # Watchdog handler class to take action
 def create_app(config_name):
     app = Flask(__name__) # initialization of the flask app
     Bootstrap(app) # allowing app to use bootstrap
+    socketio = SockerIO(app)
+
+    @socketio.on('event')
+    def handlEvent(evt):
+        print('Event: ' + evt)
+        send(evt, brodcast = true)
+
+    if __name__== '__main__':
+        socketio.run(app)
+
+
 
     global return_url
     return_url = ''
