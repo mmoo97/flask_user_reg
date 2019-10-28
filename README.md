@@ -19,3 +19,6 @@ $ pip install -r requirements.txt
 ```
 - Note, to install flask in your own `$HOME` use `pip install --user Flask`.
 
+## App Flow Diagram
+
+![](app_flow.png)
