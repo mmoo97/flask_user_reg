@@ -43,12 +43,17 @@ class MyHandler(FileSystemEventHandler): # Watchdog handler class to take action
 
         try:
 
+<<<<<<< Updated upstream
             if ("/home/reggie/flat_db/" + time_stamp + ".done") in snap_diff.files_moved[0]: # check for timestamped string with .done extention in flat_db
+=======
+            if len(snap_diff.files_moved) > 0 and ("/home/reggie/flat_db/" + time_stamp + ".done") in snap_diff.files_moved[0]:
+>>>>>>> Stashed changes
 
                 observing = False
                 # print("YES!")
         except Exception as e:
             print(e)
+            return render_template('errors/500.html', title='Server Error'), 500
         # print("Created: ", snap_diff.files_created)
         # print("Deleted: ", snap_diff.files_deleted)
         # print("Modified: ", snap_diff.files_modified)
