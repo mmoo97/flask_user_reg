@@ -16,6 +16,7 @@ from wtforms import StringField, SubmitField, validators
 
 global time_stamp
 
+
 def create_app(config_name):
     app = Flask(__name__) # initialization of the flask app
     Bootstrap(app) # allowing app to use bootstrap
@@ -25,6 +26,7 @@ def create_app(config_name):
 
     class MainForm(FlaskForm): # class for the form itself
         fullname = StringField('Full Name: ', [validators.DataRequired(), ])
+        reason = StringField('Reason for Requesting Account: ', [validators.DataRequired(), ])
         submit = SubmitField('Submit')
 
     @app.route('/', methods=['GET', 'POST']) # initial route to display the reg page
@@ -39,18 +41,18 @@ def create_app(config_name):
         form = MainForm() # initialize form object
         if form.is_submitted():
             fullname = form.fullname.data
+            reason = form.reason.data
+            form.fullname.data = '' # reset form data upon capture
             form.fullname.data = '' # reset form data upon capture
 
-            return redirect(url_for('success', username=str(username), fullname=fullname))
+            return redirect(url_for('success', username=str(username), fullname=fullname, reason=reason))
 
         return render_template('auth/SignUp.html', form=form, user=username)
 
     @app.route('/success/<username>/<fullname>')
-    def success(username, fullname):
+    def success(username, fullname, reason):
 
         global return_url
-        global snap_before
-        global observing
         global time_stamp
         print(username, fullname, return_url, file=sys.stdout)
 
@@ -70,11 +72,11 @@ def create_app(config_name):
                 os.makedirs(directory)
 
             file = open(complete_file_name, "w") # create time stamped file to be queued
-            
-            file.write("Hey")
+
+            file.write(reason)
 
             file.close()
-            return render_template("errors/registration_failed.html") # Todo: replace template with redirect
+            return render_template("auth/request_recieved.html") # Todo: replace template with redirect
             # return redirect(return_url, 302)
 
         except Exception as e:
