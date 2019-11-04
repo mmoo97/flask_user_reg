@@ -64,6 +64,8 @@
       <div class="signUpContainer">
           <label><b>{{ form.fullname.label }}<br></b></label>
           {{ form.fullname(class_="form-control", placeholder="Enter Full Name") }}
+          <label><b>{{ form.reason.label }}<br></b></label>
+          {{ form.reason(class_="form-control", placeholder="Enter Reason for Account Request") }}
           {{ form.submit(class_="btn btn-primary btn-block" ) }}
 
           {% with messages = get_flashed_messages() %}
