@@ -76,7 +76,7 @@ def create_app(config_name):
             file.write(reason)
 
             file.close()
-            return render_template("auth/request_recieved.html") # Todo: replace template with redirect
+            return render_template("auth/request_received.html") # Todo: replace template with redirect
             # return redirect(return_url, 302)
 
         except Exception as e:
