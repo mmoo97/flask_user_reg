@@ -77,6 +77,7 @@ def create_app(config_name):
 
             file = open(complete_file_name, "w") # create time stamped file to be queued
 
+            file.write(fullname + "\n")
             file.write(reason)
 
             file.close()
