@@ -14,55 +14,7 @@ from flask_wtf import FlaskForm
 from flask_bootstrap import Bootstrap
 from wtforms import StringField, SubmitField, validators
 
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
-from watchdog.utils import dirsnapshot
-
-
-global snap_before
-global snap_after
-global snap_diff
-global observing
 global time_stamp
-
-observing = False
-
-
-class MyHandler(FileSystemEventHandler): # Watchdog handler class to take action when observation requested
-    def on_modified(self, event):
-
-        global snap_before
-        global snap_after
-        global snap_diff
-        global observing
-        global time_stamp
-
-        # print(event.src_path + " modified.")
-        snap_after = dirsnapshot.DirectorySnapshot("/home/reggie/flat_db", True) # take post flat_db creation snapshot of the directory
-        snap_diff = dirsnapshot.DirectorySnapshotDiff(snap_before, snap_after) # object to compare the initial snapshot with the final snapshot
-
-        try:
-
-<<<<<<< Updated upstream
-            if ("/home/reggie/flat_db/" + time_stamp + ".done") in snap_diff.files_moved[0]: # check for timestamped string with .done extention in flat_db
-=======
-            if len(snap_diff.files_moved) > 0 and ("/home/reggie/flat_db/" + time_stamp + ".done") in snap_diff.files_moved[0]:
->>>>>>> Stashed changes
-
-                observing = False
-                # print("YES!")
-        except Exception as e:
-            print(e)
-            return render_template('errors/500.html', title='Server Error'), 500
-        # print("Created: ", snap_diff.files_created)
-        # print("Deleted: ", snap_diff.files_deleted)
-        # print("Modified: ", snap_diff.files_modified)
-        # print("Moved: ", snap_diff.files_moved)
-
-    def on_created(self, event):
-
-        print(event.src_path + " created.")
-
 
 def create_app(config_name):
     app = Flask(__name__) # initialization of the flask app
@@ -117,24 +69,10 @@ def create_app(config_name):
             if not os.path.exists(directory):
                 os.makedirs(directory)
 
-            event_handler = MyHandler() # initialize handler
-            observer = Observer() # initialize obsever to relay to handler
-            observer.schedule(event_handler, path='/home/reggie/flat_db', recursive=True)
-            observer.start()
-
-            observing = True
-
             file = open(complete_file_name, "w") # create time stamped file to be queued
+            
             file.write("Hey")
 
-            # take an initial state snapshot of the db after file queued
-            snap_before = dirsnapshot.DirectorySnapshot("/home/reggie/flat_db", True)
-
-            while observing:
-                # TODO: Update page ui element dynamically
-
-                time.sleep(5)
-            observer.stop()
             file.close()
             return render_template("errors/registration_failed.html") # Todo: replace template with redirect
             # return redirect(return_url, 302)
