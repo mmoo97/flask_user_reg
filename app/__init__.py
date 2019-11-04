@@ -1,4 +1,4 @@
-# app/__init__.py
+    # app/__init__.py
 
 # local imports
 from __future__ import print_function
@@ -9,10 +9,10 @@ import subprocess
 import time
 
 # third-party imports
-from flask import Flask, redirect, url_for, request, render_template, flash
+from flask import Flask, redirect, url_for, request, render_template, flash, session
 from flask_wtf import FlaskForm
 from flask_bootstrap import Bootstrap
-from wtforms import StringField, SubmitField, validators
+from wtforms import StringField, SubmitField, TextAreaField, validators
 
 global time_stamp
 
@@ -25,8 +25,8 @@ def create_app(config_name):
     return_url = ''
 
     class MainForm(FlaskForm): # class for the form itself
-        fullname = StringField('Full Name: ', [validators.DataRequired(), ])
-        reason = StringField('Reason for Requesting Account: ', [validators.DataRequired(), ])
+        fullname = StringField('Full Name: ', [validators.DataRequired(), validators.length(max=50)])
+        reason = TextAreaField('Reason for Requesting Account: ', [validators.DataRequired(), validators.length(max=150)])
         submit = SubmitField('Submit')
 
     @app.route('/', methods=['GET', 'POST']) # initial route to display the reg page
@@ -40,17 +40,21 @@ def create_app(config_name):
         fullname = False
         form = MainForm() # initialize form object
         if form.is_submitted():
-            fullname = form.fullname.data
-            reason = form.reason.data
+
+            session["fullname"] = form.fullname.data
+            session['reason'] = form.reason.data
             form.fullname.data = '' # reset form data upon capture
             form.fullname.data = '' # reset form data upon capture
 
-            return redirect(url_for('success', username=str(username), fullname=fullname, reason=reason))
+            return redirect(url_for('success', username=username))
 
         return render_template('auth/SignUp.html', form=form, user=username)
 
-    @app.route('/success/<username>/<fullname>')
-    def success(username, fullname, reason):
+    @app.route('/success/<username>')
+    def success(username):
+
+        fullname = session.get('fullname', None)
+        reason = session.get('reason', None)
 
         global return_url
         global time_stamp
