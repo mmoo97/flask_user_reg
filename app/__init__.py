@@ -13,13 +13,16 @@ from flask import Flask, redirect, url_for, request, render_template, flash, ses
 from flask_wtf import FlaskForm
 from flask_bootstrap import Bootstrap
 from wtforms import StringField, SubmitField, TextAreaField, validators
+from flask_socketio import SocketIO
 
+# global declarations
 global time_stamp
 
 
 def create_app(config_name):
     app = Flask(__name__) # initialization of the flask app
     Bootstrap(app) # allowing app to use bootstrap
+    socketio = SocketIO(app)
 
     global return_url
     return_url = ''
