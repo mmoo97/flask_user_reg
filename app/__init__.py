@@ -46,12 +46,12 @@ def create_app(config_name):
             form.fullname.data = '' # reset form data upon capture
             form.fullname.data = '' # reset form data upon capture
 
-            return redirect(url_for('success', username=username))
+            return redirect(url_for('request_sent', username=username))
 
         return render_template('auth/SignUp.html', form=form, user=username)
 
-    @app.route('/success/<username>')
-    def success(username):
+    @app.route('/request_sent/<username>')
+    def request_sent(username):
 
         fullname = session.get('fullname', None)
         reason = session.get('reason', None)
