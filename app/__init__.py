@@ -22,7 +22,7 @@ global time_stamp
 def create_app(config_name):
     app = Flask(__name__) # initialization of the flask app
     Bootstrap(app) # allowing app to use bootstrap
-    socketio = SocketIO(app)
+    socketio = SocketIO(app) # allow app to use socket.io
 
     global return_url
     return_url = ''
@@ -92,6 +92,13 @@ def create_app(config_name):
             flash("Registration Failed. Please try again.") # show error message upon failure
             return redirect(url_for('index'))
 
+    def messageReceived(methods=['GET', 'POST']):
+        print('message was received!!!')
+
+    @socketio.on('my event')
+    def handle_my_custom_event(json, methods=['GET', 'POST']):
+        print('received my event: ' + str(json))
+        socketio.emit('my response', json, callback=messageReceived)
     # misc page error catching
 
     @app.errorhandler(403)
