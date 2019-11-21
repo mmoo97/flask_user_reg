@@ -35,7 +35,7 @@ def create_app(config_name):
     @app.route('/', methods=['GET', 'POST']) # initial route to display the reg page
     def index():
         global return_url
-        username = request.remote_user
+        username = "mmoo97"
 
         if "redir" in request.args and return_url == "": # check for redir arg in url
             return_url = request.args.get("redir") or "/pun/sys/dashboard"
@@ -72,8 +72,8 @@ def create_app(config_name):
             # of the file beieng blazerID the user submitted from the flask form (fullname)
 
             time_stamp = time.strftime("%m-%d-%Y_%H:%M:%S")
-            directory = "/home/reggie/flat_db/"
-            complete_file_name = os.path.join(directory, time_stamp + "_" + request.remote_user + ".txt")
+            directory = "flat_db/"
+            complete_file_name = os.path.join(directory, time_stamp + "_" + username + ".txt")
 
             if not os.path.exists(directory):
                 os.makedirs(directory)
