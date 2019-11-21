@@ -5,6 +5,8 @@
   {{ super() }}
 <script src="{{ url_for('static', filename='scripts/function.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/application.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
   <style type="text/css">
     .important { color: #336699; }
   </style>
@@ -60,7 +62,7 @@
 
     <h2>Hello, {{ user }}!</h2>
 
-    <form action="." method="post" onsubmit="displayloading()">
+    <form action="." method="post" onsubmit="displayloading(); socketIO();">
       <div class="signUpContainer">
           <label><b>{{ form.fullname.label }}<br></b></label>
           {{ form.fullname(class_="form-control", placeholder="Enter Full Name") }}
@@ -81,9 +83,12 @@
       </div>
     </form>
     </div>
-<div id="notification_window" >
 
+
+<div id="notification_window" >
 </div>
+
+        <div id ="testo"></div>
 {% endblock %}
 </body>
 {% block footer %}
