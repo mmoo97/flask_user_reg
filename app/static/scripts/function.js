@@ -10,7 +10,7 @@ function displayloading() {
                 "                    This can take between 5-10 min.\n" +
                 "                </p>\n" +
                 "      </ol>\n" +
-                "                <img src=\"/register/static/img/loading.gif\" style=\"width: 35px; height: auto\"> Pending...\n" +
+                "                <img src=\"/static/img/loading.gif\" style=\"width: 35px; height: auto\"> Pending...\n" +
                 "            </div></div>\n" +
                 "\n" +
                 "    <div class=\"joyride-modal-bg\" style=\"display: block;\"></div>"
