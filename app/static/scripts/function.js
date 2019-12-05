@@ -57,6 +57,6 @@ function socketIO() {
           $( 'div.message_holder' ).append( '<div><b style="color: #002">'+msg.user_name+'</b> created. WELCOME</div>' )
         }
       })
-    </script>
+
 
 }
