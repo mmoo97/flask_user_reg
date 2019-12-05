@@ -49,7 +49,7 @@ def create_app(config_name):
             form.fullname.data = '' # reset form data upon capture
             form.fullname.data = '' # reset form data upon capture
 
-            return redirect(url_for('request_sent', username=username))
+            # return redirect(url_for('request_sent', username=username))
 
         return render_template('auth/SignUp.html', form=form, user=username)
 
@@ -84,8 +84,8 @@ def create_app(config_name):
             file.write(reason)
 
             file.close()
-            return "Hello"
-            # return render_template("auth/request_received.html") # Todo: replace template with redirect
+
+            return render_template("auth/request_received.html") # Todo: replace template with redirect
             # return redirect(return_url, 302)
 
         except Exception as e:
