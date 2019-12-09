@@ -16,7 +16,7 @@ from wtforms import StringField, SubmitField, TextAreaField, validators
 from flask_socketio import SocketIO
 
 # global declarations
-global time_stamp
+
 
 
 def create_app(config_name):
