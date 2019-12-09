@@ -5,6 +5,36 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
 <script src="static/scripts/function.js"></script>
 <script src="static/scripts/function.js"></script>
+
+<script>
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+      socket.on( 'connect', function() {
+        socket.emit( 'user connect', {
+          data: 'User Connected'
+        } )
+
+       socket.on( 'my response', function( msg ) {
+        console.log( msg )
+        if( typeof msg.user_name !== 'undefined' ) {
+          $( 'h3' ).remove()
+          $( 'div.message_holder' ).append( '<div><b style="color: #002">'+msg.user_name+'</b> creating</div>' )
+        }
+      })
+
+
+ 	socket.on( 'create response', function( msg ) {
+        console.log( msg )
+        if( typeof msg.user_name !== 'undefined' ) {
+          $( 'h3' ).remove()
+          $( 'div.message_holder' ).append( '<div><b style="color: #002">'+msg.user_name+'</b> created. WELCOME</div>' )
+        }
+      })
+
+
+})
+</script>
+
   <style type="text/css">
     .important { color: #336699; }
   </style>
@@ -61,20 +91,20 @@
     <form action="." method="post" onsubmit="">
       <div class="signUpContainer">
           <label><b><label for="fullname">Full Name: </label><br></b></label>
-            <input class="form-control" id="fullname" name="fullname" placeholder="Enter Full Name" required="" type="text" value="">
+            <input class="form-control" id="fullname" name="fullname" placeholder="Enter Full Name" required="" type="text">
           <label><b><label for="reason">Reason for Requesting Account: </label><br></b></label>
             <textarea class="form-control" id="reason" name="reason" placeholder="Enter Reason for Account Request" required=""></textarea>
-          <input class="btn btn-primary btn-block" id="submit" name="submit" type="button" value="Submit" onclick="displayloading(); socketIO();">
+          <input class="btn btn-primary btn-block" id="submit" name="submit" type="button" value="Submit" onclick="displayloading(); socketIO()">
 
-{#          {% with messages = get_flashed_messages() %}#}
-{#            {% if messages %}#}
-{#            {% for message in messages %}#}
-{#            <div>#}
-{#                <strong style="color: #be051b; text-align: center;">{{ message }}</strong>#}
-{#            </div>#}
-{#      {% endfor %}#}
-{#   {% endif %}#}
-{#{% endwith %}#}
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <div>
+                <strong style="color: #be051b; text-align: center;">{{ message }}</strong>
+            </div>
+      {% endfor %}
+   {% endif %}
+{% endwith %}
 
       </div>
     </form>

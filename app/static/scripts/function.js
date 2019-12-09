@@ -17,46 +17,8 @@ function displayloading() {
 }
 
 function socketIO() {
-      var socket = io.connect('http://' + document.domain + ':' + location.port);
-
-      socket.on( 'connect', function() {
-        socket.emit( 'user connect', {
-          data: 'User Connected'
-        } )
-
-           document.getElementById("testo").innerHTML = "yo"
-
-
-       var form = $( 'form' ).on( 'submit', function( e ) {
-          e.preventDefault()
-          let user_name = $( 'input.username' ).val()
-          let user_input = $( 'input.message' ).val()
-          socket.emit( 'my event', {
-            user_name : user_name,
-            message : user_input
-          } )
-          $( 'input.message' ).val( '' ).focus()
-        } )
-      } )
-
-
-
-       socket.on( 'my response', function( msg ) {
-        console.log( msg )
-        if( typeof msg.user_name !== 'undefined' ) {
-          $( 'h3' ).remove()
-          $( 'div.message_holder' ).append( '<div><b style="color: #002">'+msg.user_name+'</b> creating</div>' )
-        }
-      })
-
-
- 	socket.on( 'create response', function( msg ) {
-        console.log( msg )
-        if( typeof msg.user_name !== 'undefined' ) {
-          $( 'h3' ).remove()
-          $( 'div.message_holder' ).append( '<div><b style="color: #002">'+msg.user_name+'</b> created. WELCOME</div>' )
-        }
-      })
-
-
+    socket.emit('user connect', {
+        fullname: document.getElementById("fullname").value,
+        reason: document.getElementById("reason").value
+    })
 }

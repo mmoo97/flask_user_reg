@@ -22,7 +22,6 @@ global time_stamp
 def create_app(config_name):
     app = Flask(__name__) # initialization of the flask app
     Bootstrap(app) # allowing app to use bootstrap
-    socketio = SocketIO(app)
 
     global return_url
     return_url = ''
@@ -78,27 +77,6 @@ def create_app(config_name):
             return redirect(url_for('index'))
 
     # misc page error catching
-
-    def messageReceived(methods=['GET', 'POST']):
-        print('message was received!!!')
-
-    @socketio.on('user connect')
-    def handle_my_custom_event(json, methods=['GET', 'POST']):
-        print('received my event: ' + str(json))
-
-    @socketio.on('my event')
-    def handle_my_custom_event(json, methods=['GET', 'POST']):
-        print('received my event: ' + str(json))
-        socketio.emit('my response', json, callback=messageReceived)
-        # time_stamp = time.strftime("%m-%d-%Y_%H:%M:%S")
-        # complete_file_name = os.path.join(directory, time_stamp + ".txt")
-        # file = open(complete_file_name, "w")
-        # file.close()
-        # time.sleep(5)
-        #
-        # pre, ext = os.path.splitext(complete_file_name)
-        # os.rename(complete_file_name, pre + ".done")
-        socketio.emit('create response', json, callback=messageReceived)
 
     @app.errorhandler(403)
     def forbidden(error):
