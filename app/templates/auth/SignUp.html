@@ -1,12 +1,10 @@
-{% extends "auth/base.html" %}
 <html class="gr__rc_uab_edu">
-{% block title %} User Registration {% endblock %}
-{% block head %}
-  {{ super() }}
+<title>User Registration </title>
+<head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
-<script src="{{ url_for('static', filename='scripts/function.js') }}"></script>
-<script src="{{ url_for('static', filename='scripts/application.js') }}"></script>
+<script src="static/scripts/function.js"></script>
+<script src="static/scripts/function.js"></script>
   <style type="text/css">
     .important { color: #336699; }
   </style>
@@ -21,13 +19,11 @@
 }
 
 </style>
-{% endblock %}
-
+</head>
 
 
 <body data-gr-c-s-loaded="true">
 <header>
-    {% block body %}
   <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -62,23 +58,23 @@
 
     <h2>Hello, {{ user }}!</h2>
 
-    <form action="." method="post" onsubmit="displayloading(); socketIO();">
+    <form action="." method="post" onsubmit="">
       <div class="signUpContainer">
-          <label><b>{{ form.fullname.label }}<br></b></label>
-          {{ form.fullname(class_="form-control", placeholder="Enter Full Name") }}
-          <label><b>{{ form.reason.label }}<br></b></label>
-          {{ form.reason(class_="form-control", placeholder="Enter Reason for Account Request") }}
-          {{ form.submit(class_="btn btn-primary btn-block" ) }}
+          <label><b><label for="fullname">Full Name: </label><br></b></label>
+            <input class="form-control" id="fullname" name="fullname" placeholder="Enter Full Name" required="" type="text" value="">
+          <label><b><label for="reason">Reason for Requesting Account: </label><br></b></label>
+            <textarea class="form-control" id="reason" name="reason" placeholder="Enter Reason for Account Request" required=""></textarea>
+          <input class="btn btn-primary btn-block" id="submit" name="submit" type="button" value="Submit" onclick="displayloading(); socketIO();">
 
-          {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            {% for message in messages %}
-            <div>
-                <strong style="color: #be051b; text-align: center;">{{ message }}</strong>
-            </div>
-      {% endfor %}
-   {% endif %}
-{% endwith %}
+{#          {% with messages = get_flashed_messages() %}#}
+{#            {% if messages %}#}
+{#            {% for message in messages %}#}
+{#            <div>#}
+{#                <strong style="color: #be051b; text-align: center;">{{ message }}</strong>#}
+{#            </div>#}
+{#      {% endfor %}#}
+{#   {% endif %}#}
+{#{% endwith %}#}
 
       </div>
     </form>
@@ -89,9 +85,8 @@
 </div>
 
         <div id ="testo"></div>
-{% endblock %}
 </body>
-{% block footer %}
+<footer>
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-6 col-sm-6">
@@ -102,5 +97,5 @@
     </div>
   </div><!-- /.container -->
 
-{% endblock %}
+</footer>
 </html>

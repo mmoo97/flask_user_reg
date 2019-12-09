@@ -27,11 +27,6 @@ def create_app(config_name):
     global return_url
     return_url = ''
 
-    class MainForm(FlaskForm): # class for the form itself
-        fullname = StringField('Full Name: ', [validators.DataRequired(), validators.length(max=50)])
-        reason = TextAreaField('Reason for Requesting Account: ', [validators.DataRequired(), validators.length(max=150)])
-        submit = SubmitField('Submit')
-
     @app.route('/', methods=['GET', 'POST']) # initial route to display the reg page
     def index():
         global return_url
@@ -40,18 +35,7 @@ def create_app(config_name):
         if "redir" in request.args and return_url == "": # check for redir arg in url
             return_url = request.args.get("redir") or "/pun/sys/dashboard"
 
-        fullname = False
-        form = MainForm() # initialize form object
-        if form.is_submitted():
-
-            session["fullname"] = form.fullname.data
-            session['reason'] = form.reason.data
-            form.fullname.data = '' # reset form data upon capture
-            form.fullname.data = '' # reset form data upon capture
-
-            # return redirect(url_for('request_sent', username=username))
-
-        return render_template('auth/SignUp.html', form=form, user=username)
+        return render_template('auth/SignUp.html', user=username)
 
     @app.route('/request_sent/<username>')
     def request_sent(username):
