@@ -28,7 +28,7 @@ def create_app(config_name):
     @app.route('/', methods=['GET', 'POST']) # initial route to display the reg page
     def index():
         global return_url
-        username = "mmoo97"
+        username = "name_test"
 
         if "redir" in request.args and return_url == "": # check for redir arg in url
             return_url = request.args.get("redir") or "/pun/sys/dashboard"

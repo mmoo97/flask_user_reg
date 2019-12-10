@@ -11,12 +11,15 @@
 
       socket.on( 'connect', function() {
         socket.emit( 'user connect', {
-          data: 'User Connected'
+          user: document.getElementById("username").innerText
         } )
 
        socket.on( 'creating account', function( msg ) {
            document.getElementById("error").innerText = "";
            displayloading();
+           socket.emit("validate creation", {
+               username: document.getElementById("username").innerText
+           })
       })
 
       socket.on( 'Account creation failed', function( msg ) {
@@ -24,8 +27,8 @@
       })
 
 
- 	socket.on( 'account created', function( msg ) {
-        document.getElementById("test").innerHTML = "Account Created!";
+ 	socket.on( 'Account created', function( msg ) {
+ 	    alert("Account creation successful!");
       })
 
 

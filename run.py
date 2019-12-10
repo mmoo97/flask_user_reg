@@ -17,14 +17,35 @@ def messageReceived(methods=['GET', 'POST']):
     print('message was received!!!')
 
 
+def check_dir(user, interval):
+    """
+    :param user: (string) username to check for in DB.
+    :param interval: (int) Frequency to check in seconds.
+    :return: (boolean) if account has been registered.
+    """
+    seconds = 0
+
+    while seconds < 600:
+        querystring = "_" + user + ".done"
+
+        for filename in os.listdir("flat_db/"):
+            if filename.endswith(querystring):
+                return True
+        time.sleep(interval)
+        seconds = seconds + interval
+
+    return False
+
+
 @socketio.on('user connect')
 def handle_my_custom_event(json, methods=['GET', 'POST']):
-    print('received my event: ' + str(json))
+    username = json["user"]
+    print('User ' + username + ' connected.')
 
 
 @socketio.on('user data')
-def confirm(json, methods=['GET', 'POST']):
-    print ('request received: ', str(json))
+def ingest_data(json, methods=['GET', 'POST']):
+    print ('Queue request received: ', str(json))
 
     try:
         fullname = json["fullname"]
@@ -44,9 +65,22 @@ def confirm(json, methods=['GET', 'POST']):
         file.write(reason)
 
         file.close()
+        print ('User ' + username + ' added to queue')
         socketio.emit("creating account")
+
     except Exception as e:
         print("Error in directory creation: ", e)
+        socketio.emit("Account creation failed")
+
+
+@socketio.on("validate creation")
+def creation_confirmation(json, methods=['GET', 'POST']):
+    username = json["username"]
+
+    if check_dir(username, 10):
+        print ('Account successfully created for ' + username)
+        socketio.emit("Account created")
+    else:
         socketio.emit("Account creation failed")
 
 
