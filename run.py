@@ -24,14 +24,12 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 
 @socketio.on('user data')
 def confirm(json, methods=['GET', 'POST']):
-    print (str(json))
-    socketio.emit("creating account")
+    print ('request received: ', str(json))
 
     try:
         fullname = json["fullname"]
         reason = json["reason"]
         username = json["username"]
-        failure = json["failure"]
 
         time_stamp = time.strftime("%m-%d-%Y_%H:%M:%S")
         directory = "flat_db/"
@@ -46,29 +44,10 @@ def confirm(json, methods=['GET', 'POST']):
         file.write(reason)
 
         file.close()
+        socketio.emit("creating account")
     except Exception as e:
-        # print(e)
-        flash("Registration Failed. Please try again.")  # show error message upon failure
-
-
-
-
-@socketio.on('my event')
-def handle_my_custom_event(json, methods=['GET', 'POST']):
-    print('received my event: ' + str(json))
-
-    socketio.emit('my response', json, callback="test worked")
-
-    time_stamp = time.strftime("%m-%d-%Y_%H:%M:%S")
-    directory = "flat_db/"
-    complete_file_name = os.path.join(directory, time_stamp + ".txt")
-    file = open(complete_file_name, "w")
-    file.close()
-    time.sleep(5)
-
-    pre, ext = os.path.splitext(complete_file_name)
-    os.rename(complete_file_name, pre + ".done")
-    socketio.emit('create response', json, callback=messageReceived)
+        print("Error in directory creation: ", e)
+        socketio.emit("Account creation failed")
 
 
 if __name__ == '__main__':

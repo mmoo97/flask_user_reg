@@ -23,3 +23,7 @@ function socketIO() {
         username: document.getElementById("username").innerText
     })
 }
+
+function refresh() {
+    document.location.reload(true);
+}

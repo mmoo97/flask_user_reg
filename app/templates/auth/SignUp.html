@@ -15,7 +15,12 @@
         } )
 
        socket.on( 'creating account', function( msg ) {
-        displayloading();
+           document.getElementById("error").innerText = "";
+           displayloading();
+      })
+
+      socket.on( 'Account creation failed', function( msg ) {
+          document.getElementById("error").innerText = "Registration Failed. Please try again.";
       })
 
 
@@ -88,15 +93,9 @@
             <textarea class="form-control" id="reason" name="reason" placeholder="Enter Reason for Account Request" required=""></textarea>
           <input class="btn btn-primary btn-block" id="submit" name="submit" type="button" value="Submit" onclick="socketIO()">
 
-          {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            {% for message in messages %}
-            <div>
-                <strong style="color: #be051b; text-align: center;">{{ message }}</strong>
-            </div>
-      {% endfor %}
-   {% endif %}
-{% endwith %}
+        <div>
+            <strong id="error" style="color: #be051b; text-align: center;"></strong>
+        </div>
 
       </div>
     </form>
