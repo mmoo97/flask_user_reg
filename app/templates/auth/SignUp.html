@@ -15,16 +15,12 @@
         } )
 
        socket.on( 'creating account', function( msg ) {
-        document.getElementById("test").innerHTML = "Account is being Created!";
+        displayloading();
       })
 
 
- 	socket.on( 'create response', function( msg ) {
-        console.log( msg )
-        if( typeof msg.user_name !== 'undefined' ) {
-          $( 'h3' ).remove()
-          $( 'div.message_holder' ).append( '<div><b style="color: #002">'+msg.user_name+'</b> created. WELCOME</div>' )
-        }
+ 	socket.on( 'account created', function( msg ) {
+        document.getElementById("test").innerHTML = "Account Created!";
       })
 
 
@@ -82,7 +78,7 @@
   </a>
 </div>
 
-    <h2>Hello, {{ user }}!</h2>
+    <h2>Hello, <span id="username">{{ user }}</span>!</h2>
     <div id="test">
     <form action="." method="post" onsubmit="">
       <div class="signUpContainer">

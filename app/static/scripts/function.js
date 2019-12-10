@@ -19,6 +19,7 @@ function displayloading() {
 function socketIO() {
     socket.emit('user data', {
         fullname: document.getElementById("fullname").value,
-        reason: document.getElementById("reason").value
+        reason: document.getElementById("reason").value,
+        username: document.getElementById("username").innerText
     })
 }

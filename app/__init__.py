@@ -18,7 +18,6 @@ from flask_socketio import SocketIO
 # global declarations
 
 
-
 def create_app(config_name):
     app = Flask(__name__) # initialization of the flask app
     Bootstrap(app) # allowing app to use bootstrap
@@ -36,48 +35,7 @@ def create_app(config_name):
 
         return render_template('auth/SignUp.html', user=username)
 
-    @app.route('/request_sent/<username>')
-    def request_sent(username):
-
-        fullname = session.get('fullname', None)
-        reason = session.get('reason', None)
-
-        global return_url
-        global time_stamp
-        print(username, fullname, return_url, file=sys.stdout)
-
-        # Deliver arguments to script. (for local vagrant implementation)
-        tempString = 'ssh ohpc "sudo /opt/ohpc_user_create/user_create ' + username + " " + fullname + '"'
-        print(tempString, file=sys.stdout)
-
-        try:
-            # function to write out a flatdb with the name of the file being a timestamp and the content
-            # of the file beieng blazerID the user submitted from the flask form (fullname)
-
-            time_stamp = time.strftime("%m-%d-%Y_%H:%M:%S")
-            directory = "flat_db/"
-            complete_file_name = os.path.join(directory, time_stamp + "_" + username + ".txt")
-
-            if not os.path.exists(directory):
-                os.makedirs(directory)
-
-            file = open(complete_file_name, "w") # create time stamped file to be queued
-
-            file.write(fullname + "\n")
-            file.write(reason)
-
-            file.close()
-
-            return render_template("auth/request_received.html") # Todo: replace template with redirect
-            # return redirect(return_url, 302)
-
-        except Exception as e:
-            print(e)
-            flash("Registration Failed. Please try again.") # show error message upon failure
-            return redirect(url_for('index'))
-
     # misc page error catching
-
     @app.errorhandler(403)
     def forbidden(error):
         return render_template('errors/403.html', title='Forbidden'), 403
